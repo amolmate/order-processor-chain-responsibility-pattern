@@ -1,0 +1,272 @@
+{
+	"exceptions": [
+		{
+			"responseCode": 400,
+			"errorCode": 401,
+			"errorMessage": "Environment configuration error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Environment configuration error"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 402,
+			"errorMessage": "Exception occurred while initializing configuration from config path",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Exception occurred while initializing configuration from config path"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 403,
+			"errorMessage": "Error while creating Hibernate Session Factory",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while creating Hibernate Session Factory"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 404,
+			"errorMessage": "Exception occured while reading file",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Exception occured while reading file"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 405,
+			"errorMessage": "ECS task stock movement failed",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "ECS task stock movement failed"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 406,
+			"errorMessage": "Error while processing ENV_CONF file ",
+			"isForSNSPublishing": "true",
+			"snsSubject": "Stock movement generator",
+			"snsMessage": "Error while processing ENV_CONF file"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 407,
+			"errorMessage": "Connection refused exception occured",
+			"isForSNSPublishing": "true",
+			"snsSubject": "Stock movement generator",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while processing ENV_CONF file"
+		},
+		{
+			"responseCode": 400,
+			"errorCode": 407,
+			"errorMessage": "Connection refused exception occured",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-SER-CALL-ERROR",
+			"snsMessage": "Connection refused exception occured"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 501,
+			"errorMessage": "Exception occurred while uploading file to S3",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-FILE-RD-WT-ERROR",
+			"snsMessage": "Exception occurred while uploading file to S3"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 502,
+			"errorMessage": "Input stream is Null while downloading file from S3",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-FILE-RD-WT-ERROR",
+			"snsMessage": "Input stream is Null while downloading file from S3"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 503,
+			"errorMessage": "Exception occurred while copying S3 file",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-FILE-RD-WT-ERROR",
+			"snsMessage": "Exception occurred while copying S3 file"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 504,
+			"errorMessage": "Exception occurred while deleting S3 file ",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-FILE-RD-WT-ERROR",
+			"snsMessage": "Exception occurred while deleting S3 file "
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 505,
+			"errorMessage": "S3 File Json Mapping error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "S3 File Json Mapping error"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 506,
+			"errorMessage": "S3 File configuration not found",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "S3 File configuration not found"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 507,
+			"errorMessage": "No data found at S3 Bucket",
+			"isForSNSPublishing": "true",
+
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "No data found at S3 Bucket"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 508,
+			"errorMessage": "Error while fetching data from stock",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while fetching data from stock"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 509,
+			"errorMessage": "Error while copying file to RDS",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while copying file to RDS"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 510,
+			"errorMessage": "Thread execution error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Thread execution error"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 511,
+			"errorMessage": "Thread execution future error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Thread execution future error"
+		},
+		{
+			"responseCode": 500,
+			"errorCode": 512,
+			"errorMessage": "Transaction rollback error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Transaction rollback error"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 601,
+			"errorMessage": "Error while grouping Stocks for specific jobId",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while grouping Stocks for specific jobId"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 602,
+			"errorMessage": "Error while copying file to DB",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while copying file to DB"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 603,
+			"errorMessage": "External service failed",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "External service failed"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 604,
+			"errorMessage": "Logging SNS details for generate DO ",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Logging SNS details for generate DO"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 605,
+			"errorMessage": "Error while processing file with specific jobId",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while processing file with specific jobId"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 606,
+			"errorMessage": "Error while logging records in SNS",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-DUP-REC-ERROR",
+			"snsMessage": "Error while logging records in SNS"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 607,
+			"errorMessage": "Error while saving records in error table",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while saving records in error table"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 608,
+			"errorMessage": "Error while saving records in retry table",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while saving records in retry table"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 609,
+			"errorMessage": "Error while processing source",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while processing source"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 610,
+			"errorMessage": "Cancel_Stockmovement_Request_Error",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Cancel_Stockmovement_Request_Error"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 611,
+			"errorMessage": "Error while creating map from error records",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while creting map from error records"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 612,
+			"errorMessage": "Error while uploading file in multiparts",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-PROCESSING-ERROR",
+			"snsMessage": "Error while uploading file in multiparts"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 613,
+			"errorMessage": "Error while logging records in SNS",
+			"isForSNSPublishing": "true",
+			"snsSubject": "MO-SUPPLYCHAIN-STOCK-MVMNT-GNRTR-TASK-TASK-INCRCT-REC-ERROR",
+			"snsMessage": "Error while logging records in SNS"
+		}
+		
+		
+	]
+}

@@ -1,0 +1,39 @@
+{
+  "family": "wholesale-amazon-orders-reconciliation-uat",
+  "taskRoleArn": "arn:aws:iam::020551178989:role/xxwmm_wholesale_orders_ecstask_role",
+  "containerDefinitions": [
+    {
+      "name": "wholesale-amazon-orders-reconciliation-uat",
+      "image": "020551178989.dkr.ecr.eu-west-1.amazonaws.com/wholesale/wholesale-amazon-orders-reconciliation:uat",
+      "cpu": 50,
+      "memory": 1024,
+      "entryPoint": [
+        "/bin/bash"
+      ],
+      "command": [
+        "/app/wh/orderreconciliation/bin/runApp",
+        "uat"
+      ],
+      "portMappings": [
+        {
+          "containerPort": 8080
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "xxwmm_env",
+          "value": "uat"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "wholesale-amazon-orders-reconciliation-uat",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "wholesale-amazon-orders-reconciliation"
+        }
+      }
+    }
+  ]
+}
