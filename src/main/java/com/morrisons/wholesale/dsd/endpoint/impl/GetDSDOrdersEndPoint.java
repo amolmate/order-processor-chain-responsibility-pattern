@@ -17,7 +17,7 @@ public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Response> {
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
-	//@Autowired
+	@Autowired
 	public GetDSDOrdersEndPoint(Client client, ExternalServiceConfig externalServiceConfig) {
 
 		super(client, externalServiceConfig);

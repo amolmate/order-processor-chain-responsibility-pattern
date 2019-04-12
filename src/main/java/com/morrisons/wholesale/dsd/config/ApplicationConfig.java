@@ -1,7 +1,14 @@
 package com.morrisons.wholesale.dsd.config;
 
-import org.springframework.context.annotation.Configuration;
+import javax.ws.rs.client.Client;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import com.morrisons.wholesale.dsd.provider.JerseyClientProvider;
+import com.morrisons.wholesale.dsd.provider.JerseyPatchClientProvider;
+import com.morrisons.wholesale.dsd.provider.PatchClient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Component
-@Configuration
+@ConfigurationProperties(prefix = "pers")
 public class ApplicationConfig {
 
 	private String version;
@@ -33,12 +40,15 @@ public class ApplicationConfig {
 
 	private ExternalServiceConfig getDSDOrdersConfig;
 
-	// @Bean("client")
-	// public getJersyClient
+	@Bean
+	public Client getJersyClient() {
 
-	// bind(Client.class).toProvider(JerseyClientProvider.class).in(Singleton.class);
+		return new JerseyClientProvider(getProxyConfig()).get();
+	}
 
-	// bind(PatchClient.class).toProvider(JerseyPatchClientProvider.class).in(Singleton.class);
+	@Bean
+	public PatchClient getJersyPathClient() {
 
-	// bind(IWMMExceptionFactory.class).to(WMMExceptionFactory.class);
+		return new JerseyPatchClientProvider(getProxyConfig()).get();
+	}
 }

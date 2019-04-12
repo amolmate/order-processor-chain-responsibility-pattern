@@ -14,7 +14,7 @@ public class WMMExceptionFactory implements IWMMExceptionFactory {
 
 	private final ExceptionConfigLoader exceptionConfigLoader;
 
-	//@Autowired
+	@Autowired
 	public WMMExceptionFactory(ExceptionConfigLoader exceptionConfigLoader) {
 
 		this.exceptionConfigLoader = exceptionConfigLoader;

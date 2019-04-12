@@ -1,0 +1,50 @@
+spring:
+  profiles: default
+  main:
+    banner-mode: 'off'
+logging:
+  level:
+    org.springframework.web: ERROR
+    com.morrisons: DEBUG
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n-%X{mdcData}%5p'
+management:
+  security:
+    enabled: false
+cloud:
+  aws:
+    region:
+      static: eu-west-1
+      auto: true
+    stack:
+      auto: false
+pers:
+  proxyConfig:
+    useProxy: false
+    proxyHost: null
+    proxyPort: null
+    proxyUserName: null
+    proxyPassword: null
+  s3:
+    folderName: outbound/transactions/bballocs/pending
+    bucketName: mdev.xxwmm.supplychain.relex.eeeeeeeeee
+    fileName: null
+    fileExtn: dat
+  databaseConfig:
+    username: api_stockmovementgenerator_v1_user
+    password: Ysfv37dhjk88s
+    url: jdbc:postgresql://rds-euw1-devpg-freshbackbone-001-v00.ca107skwgezh.eu-west-1.rds.amazonaws.com:5432/api_stockmovementgenerator_v1_db_dev
+    stockMovementStg: stock_movement_stg
+  getDSDOrdersConfig:
+    uri: https://dev-api.morrisons.com/wholesaleorder/v1/customers/{customerName}/orders
+    apiKey: l6dNLwHbqpnhvUVPqhaLNCjA0qKdFo36
+    authorization: Basic bDZkTkx3SGJxcG5odlVWUHFoYUxOQ2pBMHFLZEZvMzY6MERtY1NsZVRHWkJ6QURGbg==
+  customer:
+    name: amazon
+    type: OF
+    indexkey: statusCurrent
+    indexvalue: errored-price
+  dynamoDbConfiguration:
+    dynamoOrderHeaderTable: dev.xxwmm.wholesale.core.orderHeaders
+    dynamoOrderItemTable: dev.xxwmm.wholesale.core.orderItems
+    batchLimit: 25
