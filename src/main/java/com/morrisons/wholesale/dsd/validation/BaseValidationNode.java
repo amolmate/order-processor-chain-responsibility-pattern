@@ -22,7 +22,7 @@ public abstract class BaseValidationNode<T, R> implements INode<T, R> {
 			nextNode.processNode(data);
 		} else {
 			
-			//return and continue for next Item
+			//return and continue for nextItem
 		}
 		
 		return null;
