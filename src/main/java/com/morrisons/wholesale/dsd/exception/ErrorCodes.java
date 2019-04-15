@@ -12,6 +12,10 @@ public final class ErrorCodes {
 	
 	public static final Integer EXCEPTIONS_FILE_LOADING_ERR = 404;
 	
+	public static final Integer THREAD_EXECUTOR_ERR = 405;
+	
+	public static final Integer THREAD_EXECUTOR_FUTURES_ERR = 406;
+	
 	private ErrorCodes() {
 		// Added a private constructor to hide the implicit public one.
 	}
