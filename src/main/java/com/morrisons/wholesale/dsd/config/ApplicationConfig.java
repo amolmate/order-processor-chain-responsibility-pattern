@@ -38,7 +38,13 @@ public class ApplicationConfig {
 
 	private DatabaseConfig databaseConfig;
 
-	private ExternalServiceConfig getDSDOrdersConfig;
+	private ExternalServiceConfig dSDOrdersConfig;
+	
+	@Bean("dSDOrdersConfig")
+	public ExternalServiceConfig getDSDOrdersConfig() {
+		
+		return dSDOrdersConfig;
+	}
 
 	@Bean
 	public Client getJersyClient() {

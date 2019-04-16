@@ -1,21 +1,25 @@
 package com.morrisons.wholesale.dsd.processor.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.morrisons.wholesale.dsd.configservice.ConfigService;
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.impl.GetOrdersEndpointGenerator;
+import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.processor.WholesaleDSDOrderProcessorTemplate;
 import com.morrisons.wholesale.dsd.threadexecutor.IThreadExecutor;
 import com.morrisons.wholesale.dsd.validation.NodeResult;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service("wholesaleDSDOrderProcessor")
 public class WholesaleDSDOrderProcessorTemplateImpl
-		extends WholesaleDSDOrderProcessorTemplate<Customers, List<Orders>, NodeResult> {
+		extends WholesaleDSDOrderProcessorTemplate<OrderServiceConfigDescriptor, List<Orders>, NodeResult> {
 
 	private GetOrdersEndpointGenerator getOrdersEndpointGenerator;
 
@@ -33,15 +37,22 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	}
 
 	@Override
-	protected Customers getDataFromConifgService() {
+	protected OrderServiceConfigDescriptor getDataFromConifgService() {
 
-		return configService.getCustomersFromConfigService("customerId", "messageType");
+		return configService.getCustomersFromConfigService();
 	}
 
 	@Override
-	protected List<Orders> getDSDOrdersWithStatusRaised(Customers customers) {
+	protected List<Orders> getDSDOrdersWithStatusRaised(OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 
-		return threadExecutor.execute(getOrdersEndpointGenerator.generateEndPointFromCustomerList(customers));
+		//check if orderServiceConfigDescriptor is null
+		if(orderServiceConfigDescriptor == null) {
+			
+			log.error("Could not read data from config service");
+			return Collections.emptyList();
+		}
+		return threadExecutor
+				.execute(getOrdersEndpointGenerator.generateEndPointFromCustomerList(orderServiceConfigDescriptor));
 	}
 
 	@Override

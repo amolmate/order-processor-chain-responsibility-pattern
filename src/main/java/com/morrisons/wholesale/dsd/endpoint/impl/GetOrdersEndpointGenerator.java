@@ -2,47 +2,66 @@ package com.morrisons.wholesale.dsd.endpoint.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
-import com.morrisons.wholesale.dsd.dto.Customer;
-import com.morrisons.wholesale.dsd.dto.Customers;
+import javax.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.morrisons.wholesale.dsd.configservice.OrderServiceConfigExtractor;
 import com.morrisons.wholesale.dsd.dto.Orders;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IEndPointGenerator;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.thread.FetchDSDOrdersThread;
 
+@Component
 public class GetOrdersEndpointGenerator implements IEndPointGenerator {
 
-	public GetOrdersEndpointGenerator() {
+	@Autowired
+	private IBaseGetEndPoint<Response> getDSDOrdersEndPoint;
 
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Callable<Orders>> generateEndPointFromCustomerList(Customers customers) {
+	public List<Callable<Orders>> generateEndPointFromCustomerList(
+			OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 
-		List<Customer> customerList = customers.getCustomers();
+		List<Callable<Orders>> callableList = new ArrayList<>();
 
-		return customerList.stream().map(this::getCallableForCustomer).collect(Collectors.toList());
+		List<Map<String, Object>> customerList = (List<Map<String, Object>>) OrderServiceConfigExtractor
+				.getSettingOrDefault("customers", orderServiceConfigDescriptor, List.class, new ArrayList<>());
+
+		customerList.forEach(s -> getCallableForCustomer(s, callableList));
+		return callableList;
 	}
 
-	private Callable<Orders> getCallableForCustomer(Customer customer) {
-		
-		
-		return new FetchDSDOrdersThread(getParameterMappings(customer));
+	@SuppressWarnings("unchecked")
+	private void getCallableForCustomer(Map<String, Object> customer, List<Callable<Orders>> callableList) {
+
+		List<Map<String, Object>> supplierList = (List<Map<String, Object>>) customer.get("supportedSuppliers");
+
+		supplierList.forEach(s -> callableList.add(new FetchDSDOrdersThread(getDSDOrdersEndPoint,
+				getParameterMappings(s, (String) customer.get("name")))));
 	}
 
-	private ParameterMappings getParameterMappings(Customer customer) {
-		
+	private ParameterMappings getParameterMappings(Map<String, Object> supplier, String customerId) {
+
 		ParameterMappings parameterMappings = new ParameterMappings();
+
 		List<ParameterMapping> pathParameters = new ArrayList<>();
 		List<ParameterMapping> queryParameters = new ArrayList<>();
-		List<ParameterMapping> headerParameters = new ArrayList<>();
-		parameterMappings.setHeaderParameters(headerParameters);
+
+		pathParameters.add(new ParameterMapping("customerId", customerId));
+		pathParameters.add(new ParameterMapping("supplierName", supplier.get("name")));
+
+		queryParameters.add(new ParameterMapping("status", "raised"));
+
 		parameterMappings.setPathParameters(pathParameters);
 		parameterMappings.setQueryParameters(queryParameters);
-		
+
 		return parameterMappings;
 	}
 }

@@ -5,6 +5,8 @@ import javax.ws.rs.client.Client;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.config.ProxyConfig;
 
@@ -14,6 +16,8 @@ import com.morrisons.wholesale.dsd.config.ProxyConfig;
  * @author amol13704
  *
  */
+
+@Component
 public class JerseyPatchClientProvider extends BaseJerseyClientProvider {
 
 	public JerseyPatchClientProvider(ProxyConfig proxyConfig) {
@@ -21,6 +25,7 @@ public class JerseyPatchClientProvider extends BaseJerseyClientProvider {
 		super(proxyConfig);
 	}
 
+	@Bean
 	public final PatchClient get() {
 
 		ClientConfig clientConfig = getClientConfig();

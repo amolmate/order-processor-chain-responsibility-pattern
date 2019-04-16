@@ -10,22 +10,23 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 import com.morrisons.wholesale.dsd.exception.WMMException;
 
+@Component
 public class ThreadExecutor<E> implements IThreadExecutor<E> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ThreadExecutor.class);
 
-	private final int threadPoolSize;
+	private static final int THREAD_POOL_SIZE = 30;
 
 	private final IWMMExceptionFactory exceptionFactory;
 
-	public ThreadExecutor(int threadPoolSize, IWMMExceptionFactory exceptionFactory) {
+	public ThreadExecutor(IWMMExceptionFactory exceptionFactory) {
 
-		this.threadPoolSize = threadPoolSize;
 		this.exceptionFactory = exceptionFactory;
 	}
 
@@ -34,14 +35,14 @@ public class ThreadExecutor<E> implements IThreadExecutor<E> {
 
 		try {
 
-			ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);
+			ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
 			List<E> listResponse = executorService.invokeAll(callables).stream().map(this::getEntity)
 					.collect(Collectors.toList());
 
 			executorService.shutdown();
 
-			executorService.awaitTermination(60, TimeUnit.MINUTES);
+			executorService.awaitTermination(10, TimeUnit.MINUTES);
 
 			return listResponse;
 		} catch (Exception e) {

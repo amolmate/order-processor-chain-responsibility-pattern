@@ -35,16 +35,13 @@ pers:
     password: Ysfv37dhjk88s
     url: jdbc:postgresql://rds-euw1-devpg-freshbackbone-001-v00.ca107skwgezh.eu-west-1.rds.amazonaws.com:5432/api_stockmovementgenerator_v1_db_dev
     stockMovementStg: stock_movement_stg
-  getDSDOrdersConfig:
-    uri: https://dev-api.morrisons.com/wholesaleorder/v1/customers/{customerName}/orders
+  dSDOrdersConfig:
+    uri: https://api.morrisons.com/wholesale/v2/customers/{customerId}/supplier/{supplierName}/directorders
     apiKey: l6dNLwHbqpnhvUVPqhaLNCjA0qKdFo36
     authorization: Basic bDZkTkx3SGJxcG5odlVWUHFoYUxOQ2pBMHFLZEZvMzY6MERtY1NsZVRHWkJ6QURGbg==
   customer:
-    name: amazon
-    type: OF
-    indexkey: statusCurrent
-    indexvalue: errored-price
+    indexkey: customerMessageType
+    indexvalue: wholesale-dsd-order-processor
   dynamoDbConfiguration:
-    dynamoOrderHeaderTable: dev.xxwmm.wholesale.core.orderHeaders
-    dynamoOrderItemTable: dev.xxwmm.wholesale.core.orderItems
+    dynamoWholesaleConfigTable: dev.xxwmm.wholesale.core.config
     batchLimit: 25

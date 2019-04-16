@@ -14,10 +14,6 @@ import lombok.ToString;
 @Configuration
 public class Customer {
 
-	private String name;
-
-	private String type;
-
 	private String indexkey;
 
 	private String indexvalue;

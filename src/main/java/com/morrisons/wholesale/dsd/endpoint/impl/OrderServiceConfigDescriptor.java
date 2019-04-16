@@ -6,6 +6,7 @@ import java.util.Map;
 /**
  * Created by EXTMAS3P on 27/07/2017.
  */
+
 public class OrderServiceConfigDescriptor extends LinkedHashMap<String, Object>
 {
 	private static final long serialVersionUID = 1L;

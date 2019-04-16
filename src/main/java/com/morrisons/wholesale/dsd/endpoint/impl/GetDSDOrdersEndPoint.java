@@ -11,16 +11,16 @@ import com.morrisons.wholesale.dsd.endpoint.BaseGetEndPoint;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
-@Component
+@Component("getDSDOrdersEndPoint")
 public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Response> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public GetDSDOrdersEndPoint(Client client, ExternalServiceConfig externalServiceConfig) {
+	public GetDSDOrdersEndPoint(Client client, ExternalServiceConfig dSDOrdersConfig) {
 
-		super(client, externalServiceConfig);
+		super(client, dSDOrdersConfig);
 	}
 
 	@Override

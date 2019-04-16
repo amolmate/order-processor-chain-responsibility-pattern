@@ -3,14 +3,15 @@ package com.morrisons.wholesale.dsd.configservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.morrisons.wholesale.dsd.config.ApplicationConfig;
 import com.morrisons.wholesale.dsd.dao.EventDAO;
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 
+@Service
 public class ConfigServiceImpl implements ConfigService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigServiceImpl.class);
@@ -22,23 +23,25 @@ public class ConfigServiceImpl implements ConfigService {
 	private ApplicationConfig configuration;
 
 	@Override
-	public Customers getCustomersFromConfigService(String customerHashKey, String customerIdAndMessageType) {
+	public OrderServiceConfigDescriptor getCustomersFromConfigService() {
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType START");
 
-		OrderServiceConfigDescriptor orderServiceConfigDescriptor = new OrderServiceConfigDescriptor();
+		OrderServiceConfigDescriptor orderServiceConfigDescriptor = null;
 
 		try {
 
-			Item item = eventDAO.getItem("table Name", customerHashKey, customerIdAndMessageType);
+			Item item = eventDAO.getItem(configuration.getDynamoDbConfiguration().getDynamoWholesaleConfigTable(),
+					configuration.getCustomer().getIndexkey(), configuration.getCustomer().getIndexvalue());
+			
 			orderServiceConfigDescriptor = new ObjectMapper().readValue(item.toJSON(),
 					OrderServiceConfigDescriptor.class);
 		} catch (Exception e) {
 
-			LOGGER.error(String.format("No Configuration Found for combination %s ", customerIdAndMessageType), e);
+			LOGGER.error(String.format("No Configuration Found for combination %s ", configuration.getCustomer().getIndexvalue()), e);
 		}
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType END");
-		return null;
+		return orderServiceConfigDescriptor;
 	}
 }

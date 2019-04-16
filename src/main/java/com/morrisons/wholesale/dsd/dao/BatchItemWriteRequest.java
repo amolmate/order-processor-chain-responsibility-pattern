@@ -8,14 +8,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter
-public class BatchItemWriteRequest
-{
+public class BatchItemWriteRequest {
 
-	protected BatchItemWriteRequest()
-	{
+	protected BatchItemWriteRequest() {
+		
 	}
-
-	private final int batchLimit = 25;
 
 	private String tableName;
 
@@ -25,38 +22,31 @@ public class BatchItemWriteRequest
 	@Getter(AccessLevel.NONE)
 	private Collection<Item> items = null;
 
-	public static BatchItemWriteRequest newBuilder()
-	{
+	public static BatchItemWriteRequest newBuilder() {
 		return new BatchItemWriteRequest();
 	}
 
-	public BatchItemWriteRequest withItems(Collection<Item> items)
-	{
+	public BatchItemWriteRequest withItems(Collection<Item> items) {
 		this.items = items;
 		return this;
 	}
 
-	public BatchItemWriteRequest withTable(String tableName)
-	{
+	public BatchItemWriteRequest withTable(String tableName) {
 		this.tableName = tableName;
 		return this;
 	}
 
-	public BatchItemWriteRequest build()
-	{
+	public BatchItemWriteRequest build() {
 		return this;
 	}
 
-	public void waitForCompletingRequest() 
-	{
-		while (this.threadGroup.activeCount() != 0)
-		{
+	public void waitForCompletingRequest() {
+		while (this.threadGroup.activeCount() != 0) {
 			continue;
 		}
 	}
 
-	public ThreadGroup getAssociatedBatchGroup()
-	{
+	public ThreadGroup getAssociatedBatchGroup() {
 		return threadGroup;
 	}
 

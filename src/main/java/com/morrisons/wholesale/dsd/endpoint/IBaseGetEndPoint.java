@@ -9,6 +9,7 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
  * @param <O>
  *            Output Structure
  */
+
 public interface IBaseGetEndPoint<O> {
 
 	O get(ParameterMappings parameterMappings);

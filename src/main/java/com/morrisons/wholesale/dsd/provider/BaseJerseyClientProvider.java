@@ -9,9 +9,11 @@ import com.morrisons.wholesale.dsd.config.ProxyConfig;
 /**
  * Abstract Provider class for javax.ws.rs.client.Client
  * 
- * @author surajv
+ * @author amol13704
  *
  */
+
+
 public abstract class BaseJerseyClientProvider {
 
 	public static final String HTTP_SCHEME = "http";

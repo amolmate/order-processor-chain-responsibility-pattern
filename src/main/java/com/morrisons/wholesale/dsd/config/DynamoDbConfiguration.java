@@ -19,9 +19,7 @@ import lombok.ToString;
 @Configuration
 public class DynamoDbConfiguration {
 
-	private String dynamoOrderHeaderTable;
-
-	private String dynamoOrderItemTable;
+	private String dynamoWholesaleConfigTable;
 
 	private int batchLimit;
 

@@ -1,6 +1,7 @@
 package com.morrisons.wholesale.dsd.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
@@ -13,6 +14,8 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 /**
  * Created by EXTMAS3P on 28/07/2017.
  */
+
+@Service
 public class EventDAOImpl implements EventDAO {
 
 	@Autowired

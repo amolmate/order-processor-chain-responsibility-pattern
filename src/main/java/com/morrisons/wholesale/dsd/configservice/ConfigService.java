@@ -1,8 +1,8 @@
 package com.morrisons.wholesale.dsd.configservice;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
+import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 
 public interface ConfigService {
 
-	Customers getCustomersFromConfigService(String customerId, String messageType);
+	OrderServiceConfigDescriptor getCustomersFromConfigService();
 }
