@@ -9,17 +9,11 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Audit {
+public class ItemStatus {
 
-	@JsonProperty("when")
-	private String when;
-
-	@JsonProperty("who")
-	private String who;
+	@JsonProperty("itemId")
+	private String itemId;
 	
-	@JsonProperty("eventName")
-	private String eventName;
-	
-	@JsonProperty("correlationId")
-	private String correlationId;
+	@JsonProperty("status")
+	private String status;
 }

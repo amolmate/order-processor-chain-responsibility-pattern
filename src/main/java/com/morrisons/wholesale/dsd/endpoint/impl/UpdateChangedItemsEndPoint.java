@@ -6,12 +6,12 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
-import com.morrisons.wholesale.dsd.dto.Order;
+import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.BasePutEndPoint;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
-public class UpdateChangedItemsEndPoint extends BasePutEndPoint<Order, Response> {
+public class UpdateChangedItemsEndPoint extends BasePutEndPoint<UpdateItemPayload, Response> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
@@ -39,7 +39,7 @@ public class UpdateChangedItemsEndPoint extends BasePutEndPoint<Order, Response>
 
 		return response;
 	}
-	
+
 	@Override
 	protected boolean isStatusValid(int status) {
 

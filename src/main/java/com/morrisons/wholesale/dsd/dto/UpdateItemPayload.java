@@ -1,5 +1,7 @@
 package com.morrisons.wholesale.dsd.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,17 +11,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Audit {
-
-	@JsonProperty("when")
-	private String when;
-
-	@JsonProperty("who")
-	private String who;
+public class UpdateItemPayload {
 	
-	@JsonProperty("eventName")
-	private String eventName;
+	@JsonProperty("status")
+	private String status;
+	 
+	@JsonProperty("audit")
+	private Audit audit;
 	
-	@JsonProperty("correlationId")
-	private String correlationId;
+	@JsonProperty("items")
+	private List<ItemStatus> items;
 }
