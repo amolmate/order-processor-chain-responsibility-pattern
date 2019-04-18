@@ -22,6 +22,7 @@ import com.morrisons.wholesale.dsd.exception.WMMException;
  * @param <O>
  *            Output Structure
  */
+
 public abstract class BasePostEndPoint<I, O> extends BaseEndPoint<I, O> implements IBasePostEndPoint<I, O> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasePostEndPoint.class);

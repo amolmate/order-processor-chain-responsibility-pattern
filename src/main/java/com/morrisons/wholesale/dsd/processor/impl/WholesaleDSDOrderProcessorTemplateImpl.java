@@ -56,7 +56,7 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	}
 
 	@Override
-	protected NodeResult validateDSDOrders() {
+	protected NodeResult validateDSDOrders(List<Orders> ordersList) {
 		return null;
 	}
 }

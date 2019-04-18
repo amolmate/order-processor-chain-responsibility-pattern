@@ -40,6 +40,14 @@ public class ApplicationConfig {
 
 	private ExternalServiceConfig dSDOrdersConfig;
 	
+	private ExternalServiceConfig updateItemConfig;
+	
+	@Bean("updateItemConfig")
+	public ExternalServiceConfig getUpdateItemConfig() {
+		
+		return updateItemConfig;
+	}
+	
 	@Bean("dSDOrdersConfig")
 	public ExternalServiceConfig getDSDOrdersConfig() {
 		

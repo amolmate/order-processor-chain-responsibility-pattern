@@ -1,5 +1,7 @@
 package com.morrisons.wholesale.dsd.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +14,7 @@ import lombok.Setter;
 public class Item {
 
 	@JsonProperty("caseSize")
-	private String caseSize;
+	private float caseSize;
 
 	@JsonProperty("deliveryDate")
 	private String deliveryDate;
@@ -24,7 +26,7 @@ public class Item {
 	private String itemIdentifierType;
 
 	@JsonProperty("orderPrice")
-	private String orderPrice;
+	private float orderPrice;
 
 	@JsonProperty("quantity")
 	private String quantity;
@@ -32,6 +34,21 @@ public class Item {
 	@JsonProperty("referenceId")
 	private String referenceId;
 
+	@JsonProperty("itemBaseType")
+	private String itemBaseType;
+	
+	@JsonProperty("quantityOrder")
+	private float quantityOrder;
+	
+	@JsonProperty("customerId")
+	private float customerId;
+	
+	@JsonProperty("audit")
+	private List<Audit> audit;
+	
+	@JsonProperty("morrisonsOrderId")
+	private String morrisonsOrderId;
+	
 	@JsonProperty("status")
 	private String status;
 

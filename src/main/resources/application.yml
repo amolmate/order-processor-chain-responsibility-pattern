@@ -39,6 +39,10 @@ pers:
     uri: https://api.morrisons.com/wholesale/v2/customers/{customerId}/supplier/{supplierName}/directorders
     apiKey: l6dNLwHbqpnhvUVPqhaLNCjA0qKdFo36
     authorization: Basic bDZkTkx3SGJxcG5odlVWUHFoYUxOQ2pBMHFLZEZvMzY6MERtY1NsZVRHWkJ6QURGbg==
+  updateItemConfig:
+    uri: https://api.morrisons.com/wholesale/v2/customers/{customerId}/suppliers/{supplierName}/orders/{orderId}/items
+    apiKey: l6dNLwHbqpnhvUVPqhaLNCjA0qKdFo36
+    authorization: Basic bDZkTkx3SGJxcG5odlVWUHFoYUxOQ2pBMHFLZEZvMzY6MERtY1NsZVRHWkJ6QURGbg==
   customer:
     indexkey: customerMessageType
     indexvalue: wholesale-dsd-order-processor

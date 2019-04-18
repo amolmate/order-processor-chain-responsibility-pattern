@@ -9,10 +9,10 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 		D data = getDataFromConifgService();
 		
 		// get dsd orders till date with status raised
-		getDSDOrdersWithStatusRaised(data);
+		O orders = getDSDOrdersWithStatusRaised(data);
 		
 		// validate all orders and items
-		
+		validateDSDOrders(orders);
 		
 		
 	}
@@ -21,5 +21,5 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 	
 	protected abstract O getDSDOrdersWithStatusRaised(D data);
 	
-	protected abstract R validateDSDOrders();
+	protected abstract R validateDSDOrders(O orders);
 }

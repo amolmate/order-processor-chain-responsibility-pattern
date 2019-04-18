@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +20,7 @@ import com.morrisons.wholesale.dsd.thread.FetchDSDOrdersThread;
 public class GetOrdersEndpointGenerator implements IEndPointGenerator {
 
 	@Autowired
-	private IBaseGetEndPoint<Response> getDSDOrdersEndPoint;
+	private IBaseGetEndPoint<Orders> getDSDOrdersEndPoint;
 
 	@SuppressWarnings("unchecked")
 	@Override

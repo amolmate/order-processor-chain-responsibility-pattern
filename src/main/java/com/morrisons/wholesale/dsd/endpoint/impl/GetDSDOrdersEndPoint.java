@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
+import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.BaseGetEndPoint;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("getDSDOrdersEndPoint")
-public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Response> {
+public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Orders> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
@@ -30,15 +31,15 @@ public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Response> {
 	}
 
 	@Override
-	protected Class<Response> getOutputEntityClass() {
+	protected Class<Orders> getOutputEntityClass() {
 
-		return Response.class;
+		return Orders.class;
 	}
 
 	@Override
-	protected Response getOutputEntity(Response response) {
+	protected Orders getOutputEntity(Response response) {
 
-		return response;
+		return (Orders) response.getEntity();
 	}
 
 	@Override

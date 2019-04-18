@@ -18,9 +18,9 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 
 	private ParameterMappings parameterMappings;
 
-	private IBaseGetEndPoint<Response> getDSDOrdersEndPoint;
+	private IBaseGetEndPoint<Orders> getDSDOrdersEndPoint;
 
-	public FetchDSDOrdersThread(IBaseGetEndPoint<Response> getDSDOrdersEndPoint, ParameterMappings parameterMappings) {
+	public FetchDSDOrdersThread(IBaseGetEndPoint<Orders> getDSDOrdersEndPoint, ParameterMappings parameterMappings) {
 
 		this.getDSDOrdersEndPoint = getDSDOrdersEndPoint;
 		this.parameterMappings = parameterMappings;
@@ -33,9 +33,9 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 
 			// call get order end point here
 			
-			Response response = getDSDOrdersEndPoint.get(parameterMappings);
-			Orders orders = (Orders) response.getEntity();
-			return orders;
+			/*Response response = getDSDOrdersEndPoint.get(parameterMappings);
+			Orders orders = (Orders) response.getEntity();*/
+			return getDSDOrdersEndPoint.get(parameterMappings);
 
 		} catch (WMMException e) {
 

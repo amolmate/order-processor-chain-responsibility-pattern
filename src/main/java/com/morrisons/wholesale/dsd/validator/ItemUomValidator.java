@@ -1,11 +1,11 @@
 package com.morrisons.wholesale.dsd.validator;
 
-import com.morrisons.wholesale.dsd.dto.Order;
+import com.morrisons.wholesale.dsd.dto.Item;
 
-public class ItemUomValidator  extends BaseValidator<Order> {
+public class ItemUomValidator extends BaseValidator<Item> {
 
 	@Override
-	public boolean validate(Order data) {
+	public boolean validate(Item data) {
 		return false;
 	}
 }

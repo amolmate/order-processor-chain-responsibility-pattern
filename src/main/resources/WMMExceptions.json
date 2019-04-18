@@ -25,6 +25,11 @@
 			"responseCode": 600,
 			"errorCode": 601,
 			"errorMessage": "External service for fetching direct to store orders failed"
+		},
+		{
+			"responseCode": 600,
+			"errorCode": 602,
+			"errorMessage": "External service for updating changed items failed"
 		}
 	]
 }
