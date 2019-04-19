@@ -19,6 +19,7 @@ import com.morrisons.wholesale.dsd.dto.Order;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
@@ -29,16 +30,23 @@ public class ValidationClient {
 
 	@Autowired
 	private IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint;
-
-	public void initialize(List<Orders> orders) {
-
-		node = ValidationNodeBuilder.build();
-
-		orders.forEach(this::processOrders);
+	
+	@Autowired
+	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint) {
+		
+		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
 	}
 
-	private void processOrders(Orders orders) {
+	public void initialize(List<Orders> orders, OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 
+		node = ValidationNodeBuilder.build(orderServiceConfigDescriptor);
+
+		orders.forEach(s -> processOrders(s, ));
+	}
+
+	private void processOrders(Orders orders, String customerName, String supplierName) {
+
+		orderServiceConfigDescriptor
 		orders.getOrders().forEach(this::validateOrder);
 	}
 
@@ -78,7 +86,8 @@ public class ValidationClient {
 
 		UpdateItemPayload payload = new UpdateItemPayload();
 		Audit audit = new Audit();
-		audit.setCorrelationId("");// not sure from where to get its value
+		audit.setCorrelationId(
+				verfiyAndGenerateCorrelationId(Optional.ofNullable(order.getAudit().get(0).getCorrelationId())));
 		audit.setWho(order.getAudit().get(0).getWho());
 		audit.setWhen(order.getAudit().get(0).getWhen());
 		payload.setAudit(audit);
@@ -102,8 +111,8 @@ public class ValidationClient {
 		return itemStatusList;
 	}
 
-	public void verfiyAndGenerateCorrelationId(Optional<String> correlationId) {
-		String uuid = correlationId.isPresent() ? correlationId.get() : UUID.randomUUID().toString();
-		//uuidThreadLocal.set(uuid);
+	public String verfiyAndGenerateCorrelationId(Optional<String> correlationId) {
+
+		return correlationId.isPresent() ? correlationId.get() : UUID.randomUUID().toString();
 	}
 }

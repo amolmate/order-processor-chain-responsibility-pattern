@@ -1,6 +1,7 @@
 package com.morrisons.wholesale.dsd.validation;
 
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCaseSizeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCategoryValidator;
@@ -16,14 +17,14 @@ public class ValidationNodeBuilder {
 
 	}
 
-	public static INode<Item, NodeResult> build() {
+	public static INode<Item, NodeResult> build(OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 
 		if (validationNode != null) {
 
 			return validationNode;
 		} else {
 
-			validationNode = new ItemBaseTypeValidatonNode(new ItemBaseTypeValidator(),
+			validationNode = new ItemBaseTypeValidatonNode(new ItemBaseTypeValidator(orderServiceConfigDescriptor),
 					new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(),
 							new ItemCategoryValidatonNode(new ItemCategoryValidator(),
 									new ItemIdValidatonNode(new ItemIdValidator(),

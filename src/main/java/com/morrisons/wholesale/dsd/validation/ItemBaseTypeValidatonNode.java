@@ -19,6 +19,7 @@ public class ItemBaseTypeValidatonNode extends BaseValidationNode<Item, NodeResu
 		NodeResult result = new NodeResult();
 		result.setItem(item);
 		result.setItemLevelStatus(BASE_TYPE_MISMATCH);
+		item.setStatus(BASE_TYPE_MISMATCH);
 		result.setOrderLevelStatus(Constants.VALIDATION_ERROR_MANUAL);
 		return result;
 	}

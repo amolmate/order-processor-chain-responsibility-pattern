@@ -36,22 +36,26 @@ public class Item {
 
 	@JsonProperty("itemBaseType")
 	private String itemBaseType;
-	
+
 	@JsonProperty("quantityOrder")
 	private float quantityOrder;
-	
+
 	@JsonProperty("customerId")
 	private float customerId;
-	
+
 	@JsonProperty("audit")
 	private List<Audit> audit;
-	
+
 	@JsonProperty("morrisonsOrderId")
 	private String morrisonsOrderId;
-	
+
 	@JsonProperty("status")
 	private String status;
 
 	@JsonProperty("uom")
 	private String uom;
+
+	private String customerName;
+
+	private String supplierName;
 }

@@ -45,9 +45,9 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	@Override
 	protected List<Orders> getDSDOrdersWithStatusRaised(OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 
-		//check if orderServiceConfigDescriptor is null
-		if(orderServiceConfigDescriptor == null) {
-			
+		// check if orderServiceConfigDescriptor is null
+		if (orderServiceConfigDescriptor == null) {
+
 			log.error("Could not read data from config service");
 			return Collections.emptyList();
 		}
@@ -56,7 +56,9 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	}
 
 	@Override
-	protected NodeResult validateDSDOrders(List<Orders> ordersList) {
+	protected NodeResult validateDSDOrders(List<Orders> ordersList,
+			OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
 		return null;
 	}
+
 }

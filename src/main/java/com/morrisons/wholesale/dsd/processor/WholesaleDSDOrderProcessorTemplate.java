@@ -12,7 +12,7 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 		O orders = getDSDOrdersWithStatusRaised(data);
 		
 		// validate all orders and items
-		validateDSDOrders(orders);
+		validateDSDOrders(orders, data);
 		
 		
 	}
@@ -21,5 +21,5 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 	
 	protected abstract O getDSDOrdersWithStatusRaised(D data);
 	
-	protected abstract R validateDSDOrders(O orders);
+	protected abstract R validateDSDOrders(O orders, D data);
 }

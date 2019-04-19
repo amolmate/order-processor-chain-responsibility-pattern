@@ -3,6 +3,7 @@ package com.morrisons.wholesale.dsd.endpoint.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +52,17 @@ public class GetOrdersEndpointGenerator implements IEndPointGenerator {
 
 		List<ParameterMapping> pathParameters = new ArrayList<>();
 		List<ParameterMapping> queryParameters = new ArrayList<>();
+		List<ParameterMapping> headerParameters = new ArrayList<>();
 
 		pathParameters.add(new ParameterMapping("customerId", customerId));
 		pathParameters.add(new ParameterMapping("supplierName", supplier.get("name")));
 
 		queryParameters.add(new ParameterMapping("status", "raised"));
-
+		headerParameters.add(new ParameterMapping("correlationId", UUID.randomUUID().toString()));
+		
 		parameterMappings.setPathParameters(pathParameters);
 		parameterMappings.setQueryParameters(queryParameters);
-
+		parameterMappings.setHeaderParameters(headerParameters);
 		return parameterMappings;
 	}
 }
