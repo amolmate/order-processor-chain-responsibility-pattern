@@ -9,14 +9,20 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemStatus {
+public class AggregationPayload {
 
-	@JsonProperty("itemId")
-	private String itemId;
-	
+	@JsonProperty("id")
+	private String id;
+
+	@JsonProperty("name")
+	private String name;
+
+	@JsonProperty("startTime")
+	private String startTime;
+
+	@JsonProperty("endTime")
+	private String endTime;
+
 	@JsonProperty("status")
 	private String status;
-	
-	@JsonProperty("itemAlternateId")
-    private ItemAlternateId itemAlternateId;
 }

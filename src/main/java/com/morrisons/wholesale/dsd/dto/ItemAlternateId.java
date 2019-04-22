@@ -9,14 +9,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemStatus {
+public class ItemAlternateId {
 
-	@JsonProperty("itemId")
-	private String itemId;
-	
-	@JsonProperty("status")
-	private String status;
-	
-	@JsonProperty("itemAlternateId")
-    private ItemAlternateId itemAlternateId;
+	@JsonProperty("skuMin")
+	private String skuMin;
 }

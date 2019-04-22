@@ -2,15 +2,16 @@ package com.morrisons.wholesale.dsd.endpoint.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.morrisons.wholesale.dsd.configservice.OrderServiceConfigExtractor;
+import com.morrisons.wholesale.dsd.dto.Customer;
+import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Orders;
+import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IEndPointGenerator;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
@@ -23,30 +24,26 @@ public class GetOrdersEndpointGenerator implements IEndPointGenerator {
 	@Autowired
 	private IBaseGetEndPoint<Orders> getDSDOrdersEndPoint;
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Callable<Orders>> generateEndPointFromCustomerList(
-			OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
+	public List<Callable<Orders>> generateEndPointFromCustomerList(Customers customers) {
 
 		List<Callable<Orders>> callableList = new ArrayList<>();
 
-		List<Map<String, Object>> customerList = (List<Map<String, Object>>) OrderServiceConfigExtractor
-				.getSettingOrDefault("customers", orderServiceConfigDescriptor, List.class, new ArrayList<>());
+		List<Customer> customerList = customers.getCustomers();
 
 		customerList.forEach(s -> getCallableForCustomer(s, callableList));
 		return callableList;
 	}
 
-	@SuppressWarnings("unchecked")
-	private void getCallableForCustomer(Map<String, Object> customer, List<Callable<Orders>> callableList) {
+	private void getCallableForCustomer(Customer customer, List<Callable<Orders>> callableList) {
 
-		List<Map<String, Object>> supplierList = (List<Map<String, Object>>) customer.get("supportedSuppliers");
+		List<SupportedSupplier> supplierList = customer.getSupportedSuppliers();
 
-		supplierList.forEach(s -> callableList.add(new FetchDSDOrdersThread(getDSDOrdersEndPoint,
-				getParameterMappings(s, (String) customer.get("name")))));
+		supplierList.forEach(s -> callableList
+				.add(new FetchDSDOrdersThread(getDSDOrdersEndPoint, getParameterMappings(s, customer.getName()))));
 	}
 
-	private ParameterMappings getParameterMappings(Map<String, Object> supplier, String customerId) {
+	private ParameterMappings getParameterMappings(SupportedSupplier supplier, String customerId) {
 
 		ParameterMappings parameterMappings = new ParameterMappings();
 
@@ -55,11 +52,11 @@ public class GetOrdersEndpointGenerator implements IEndPointGenerator {
 		List<ParameterMapping> headerParameters = new ArrayList<>();
 
 		pathParameters.add(new ParameterMapping("customerId", customerId));
-		pathParameters.add(new ParameterMapping("supplierName", supplier.get("name")));
+		pathParameters.add(new ParameterMapping("supplierName", supplier.getName()));
 
 		queryParameters.add(new ParameterMapping("status", "raised"));
 		headerParameters.add(new ParameterMapping("correlationId", UUID.randomUUID().toString()));
-		
+
 		parameterMappings.setPathParameters(pathParameters);
 		parameterMappings.setQueryParameters(queryParameters);
 		parameterMappings.setHeaderParameters(headerParameters);

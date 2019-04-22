@@ -2,10 +2,8 @@ package com.morrisons.wholesale.dsd.validation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
@@ -13,48 +11,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.dto.Audit;
+import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.dto.ItemAlternateId;
 import com.morrisons.wholesale.dsd.dto.ItemStatus;
 import com.morrisons.wholesale.dsd.dto.Order;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
-import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
 @Component
 public class ValidationClient {
 
-	private INode<Item, NodeResult> node;
+	private INode<Item> node;
 
 	@Autowired
 	private IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint;
-	
+
 	@Autowired
 	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint) {
-		
+
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
 	}
 
-	public void initialize(List<Orders> orders, OrderServiceConfigDescriptor orderServiceConfigDescriptor) {
+	public void initialize(List<Orders> orders, Customers customers) {
 
-		node = ValidationNodeBuilder.build(orderServiceConfigDescriptor);
+		node = ValidationNodeBuilder.build(customers);
 
-		orders.forEach(s -> processOrders(s, ));
-	}
-
-	private void processOrders(Orders orders, String customerName, String supplierName) {
-
-		orderServiceConfigDescriptor
-		orders.getOrders().forEach(this::validateOrder);
+		orders.forEach(s -> s.getOrders().forEach(this::validateOrder));
 	}
 
 	private void validateOrder(Order order) {
 
-		List<NodeResult> resultList = order.getItems().stream().map(s -> node.processNode(s)).filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		processResultList(resultList);
+		order.getItems().stream().forEach(s -> node.processNode(s));
+
 		updateItems(order);
 	}
 
@@ -78,10 +70,6 @@ public class ValidationClient {
 		return parameterMappings;
 	}
 
-	private void processResultList(List<NodeResult> resultList) {
-
-	}
-
 	private UpdateItemPayload getPayload(Order order) {
 
 		UpdateItemPayload payload = new UpdateItemPayload();
@@ -92,11 +80,11 @@ public class ValidationClient {
 		audit.setWhen(order.getAudit().get(0).getWhen());
 		payload.setAudit(audit);
 		payload.setStatus(order.getStatus());
-		payload.setItems(getItems(order.getItems()));
+		payload.setItems(getItemsStatus(order.getItems()));
 		return payload;
 	}
 
-	private List<ItemStatus> getItems(List<Item> items) {
+	private List<ItemStatus> getItemsStatus(List<Item> items) {
 
 		List<ItemStatus> itemStatusList = new ArrayList<>();
 
@@ -106,6 +94,9 @@ public class ValidationClient {
 
 			itemStatus.setItemId(item.getItemId());
 			itemStatus.setStatus(item.getStatus());
+			ItemAlternateId alternateId = new ItemAlternateId();
+			alternateId.setSkuMin(item.getItemId());
+			itemStatus.setItemAlternateId(alternateId);
 			itemStatusList.add(itemStatus);
 		}
 		return itemStatusList;

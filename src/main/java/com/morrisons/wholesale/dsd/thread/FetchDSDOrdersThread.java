@@ -1,25 +1,17 @@
 package com.morrisons.wholesale.dsd.thread;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.morrisons.wholesale.dsd.dto.Item;
-import com.morrisons.wholesale.dsd.dto.Order;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.WMMException;
-import com.morrisons.wholesale.dsd.validation.NodeResult;
 
 public class FetchDSDOrdersThread implements Callable<Orders> {
 
@@ -41,31 +33,32 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 		try {
 
 			// call get order end point here
-			
+
 			Orders orders = getDSDOrdersEndPoint.get(parameterMappings);
-			
+
 			List<ParameterMapping> pathParameters = parameterMappings.getPathParameters();
-			
-			
+
 			String suplierName = null;
-			
+
 			String customerName = null;
-			
-			for(ParameterMapping pathParameter : pathParameters) {
-				
-				if(pathParameter.getName().equals("customerId")) {
-					
+
+			for (ParameterMapping pathParameter : pathParameters) {
+
+				if (pathParameter.getName().equals("customerId")) {
+
 					customerName = (String) pathParameter.getValue();
 				}
-				if(pathParameter.getName().equals("supplierName")) {
-					
+				if (pathParameter.getName().equals("supplierName")) {
+
 					suplierName = (String) pathParameter.getValue();
 				}
-				
 			}
-			
-			orders.getOrders().stream().forEach(s -> s.getItems().stream().forEach(i -> setCustomerAndSupplierNameToItem(i, customerName, suplierName)));
-			
+
+			CustomerSupplierNames names = new CustomerSupplierNames(customerName, suplierName);
+
+			orders.getOrders().stream().forEach(s -> s.getItems().stream()
+					.forEach(i -> setCustomerAndSupplierNameToItem(i, names.suplierName, names.customerName)));
+
 			return orders;
 
 		} catch (WMMException e) {
@@ -76,9 +69,22 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 		return null;
 	}
 
-	private void setCustomerAndSupplierNameToItem(Item item, String customerName, String supplierName){
-		
+	private void setCustomerAndSupplierNameToItem(Item item, String supplierName, String customerName) {
+
 		item.setCustomerName(customerName);
 		item.setSupplierName(supplierName);
+	}
+
+	private class CustomerSupplierNames {
+
+		private String suplierName;
+
+		private String customerName;
+
+		public CustomerSupplierNames(String suplierName, String customerName) {
+
+			this.suplierName = suplierName;
+			this.customerName = customerName;
+		}
 	}
 }

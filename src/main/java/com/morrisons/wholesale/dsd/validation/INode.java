@@ -1,6 +1,6 @@
 package com.morrisons.wholesale.dsd.validation;
 
-public interface INode<T, R> {
+public interface INode<T> {
 
-	R processNode(T t);
+	void processNode(T t);
 }

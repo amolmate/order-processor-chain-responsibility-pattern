@@ -58,4 +58,6 @@ public class Item {
 	private String customerName;
 
 	private String supplierName;
+	
+	private String orderLevelStatus;
 }

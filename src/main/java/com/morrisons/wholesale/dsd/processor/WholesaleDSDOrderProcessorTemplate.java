@@ -13,8 +13,6 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 		
 		// validate all orders and items
 		validateDSDOrders(orders, data);
-		
-		
 	}
 
 	protected abstract D getDataFromConifgService();
