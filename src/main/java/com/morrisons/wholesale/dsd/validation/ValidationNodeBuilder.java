@@ -1,5 +1,7 @@
 package com.morrisons.wholesale.dsd.validation;
 
+import java.util.Map;
+
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
@@ -17,7 +19,7 @@ public class ValidationNodeBuilder {
 
 	}
 
-	public static INode<Item> build(Customers customers) {
+	public static INode<Item> build(Customers customers, Map<String, Map<String, String>> redisCatalogueItems) {
 
 		if (validationNode != null) {
 
@@ -25,9 +27,9 @@ public class ValidationNodeBuilder {
 		} else {
 
 			validationNode = new ItemBaseTypeValidatonNode(new ItemBaseTypeValidator(customers),
-					new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(customers), new ItemCategoryValidatonNode(
+					new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(customers, redisCatalogueItems), new ItemCategoryValidatonNode(
 							new ItemCategoryValidator(customers), new ItemIdValidatonNode(
-									new ItemIdValidator(customers), new ItemShipToLocationIdValidatonNode(
+									new ItemIdValidator(customers, redisCatalogueItems), new ItemShipToLocationIdValidatonNode(
 											new ItemShipToLocationIdValidator(customers), new ItemUomValidatonNode(
 													new ItemUomValidator(customers), null))))));
 			return validationNode;

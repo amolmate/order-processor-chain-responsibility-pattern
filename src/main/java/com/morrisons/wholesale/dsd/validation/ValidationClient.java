@@ -2,14 +2,19 @@ package com.morrisons.wholesale.dsd.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.morrisons.wholesale.dsd.util.RedisUtil;
+import com.morrisons.wholesale.dsd.constant.Constants;
 import com.morrisons.wholesale.dsd.dto.Audit;
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
@@ -26,30 +31,40 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 public class ValidationClient {
 
 	private INode<Item> node;
-
-	@Autowired
+	
 	private IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint;
+	
+	private RedissonClient redissonClient;
+	
+	@Value("${redis.evn}")
+	private String env;
 
 	@Autowired
-	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint) {
+	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint, RedissonClient redissonClient) {
 
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
+		this.redissonClient = redissonClient;
 	}
 
 	public void initialize(List<Orders> orders, Customers customers) {
 
-		node = ValidationNodeBuilder.build(customers);
+		node = ValidationNodeBuilder.build(customers, getRedisCatalogueItems(customers));
 
-		orders.forEach(s -> s.getOrders().forEach(this::validateOrder));
+		orders.forEach(s -> s.getOrders().forEach(this::processOrder));
 	}
 
-	private void validateOrder(Order order) {
+	private void processItem(Item item) {
+		
+		node.processNode(item);
+	}
 
-		order.getItems().stream().forEach(s -> node.processNode(s));
+	private void processOrder(Order order) {
+		
+		order.getItems().stream().forEach(this::processItem);
 
 		updateItems(order);
 	}
-
+	
 	private void updateItems(Order order) {
 
 		updateChangedItemsEndPoint.put(getParameterMappings(order), getPayload(order));
@@ -105,5 +120,12 @@ public class ValidationClient {
 	public String verfiyAndGenerateCorrelationId(Optional<String> correlationId) {
 
 		return correlationId.isPresent() ? correlationId.get() : UUID.randomUUID().toString();
+	}
+	
+	private Map<String, Map<String, String>> getRedisCatalogueItems(Customers customers) {
+
+		return RedisUtil.getCatalogueItemMap(redissonClient,
+				com.morrisons.wholesale.dsd.util.ServiceUtil.getKeyForCatalogueItem(env,
+						"catalogue redis cache key"));
 	}
 }

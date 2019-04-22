@@ -49,3 +49,10 @@ pers:
   dynamoDbConfiguration:
     dynamoWholesaleConfigTable: dev.xxwmm.wholesale.core.config
     batchLimit: 25
+  redis: 
+    endpoint: redis://127.0.0.1:6379
+    connectionMinimumIdleSize: 10
+    connectionPoolSize: 30
+    idleConnectionTimeout: 10000
+    connectTimeout: 10000
+    evn: local

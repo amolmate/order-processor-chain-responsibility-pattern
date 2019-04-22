@@ -1,5 +1,6 @@
 package com.morrisons.wholesale.dsd.validator;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.morrisons.wholesale.dsd.dto.Customer;
@@ -47,6 +48,13 @@ public abstract class BaseValidator<T> {
 			}
 		}
 	}
-	
+
+	protected Map<String, Object> getItemFromRedisCatlogue(T data) {
+
+		// redis code to fetch item from redis
+
+		return null;
+	}
+
 	public abstract boolean validate(T data);
 }
