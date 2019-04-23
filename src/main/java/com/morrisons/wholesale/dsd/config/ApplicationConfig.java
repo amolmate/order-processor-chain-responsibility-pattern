@@ -42,7 +42,7 @@ public class ApplicationConfig {
 
 	private ExternalServiceConfig updateItemConfig;
 
-	private Redisconfig redis;
+	private RedisConfig redis;
 
 	@Bean("updateItemConfig")
 	public ExternalServiceConfig getUpdateItemConfig() {

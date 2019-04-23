@@ -60,4 +60,6 @@ public class Item {
 	private String supplierName;
 	
 	private String orderLevelStatus;
+	
+	private boolean isItemValidated;
 }

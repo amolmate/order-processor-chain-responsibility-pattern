@@ -4,20 +4,17 @@ import java.util.Map;
 
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 
 public class ItemCaseSizeValidator extends BaseValidator<Item> {
 
-	private Map<String, Map<String, String>> redisCatalogueItems;
+	private IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint;
 
-	public ItemCaseSizeValidator(Customers customers) {
-
-		super(customers);
-	}
-
-	public ItemCaseSizeValidator(Customers customers, Map<String, Map<String, String>> redisCatalogueItems) {
+	public ItemCaseSizeValidator(Customers customers,
+			IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint) {
 
 		super(customers);
-		this.redisCatalogueItems = redisCatalogueItems;
+		this.redisCacheEndPoint = redisCacheEndPoint;
 	}
 
 	@Override

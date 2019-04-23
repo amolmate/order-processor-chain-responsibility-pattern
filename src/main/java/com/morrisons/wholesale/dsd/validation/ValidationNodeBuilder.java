@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCaseSizeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCategoryValidator;
@@ -19,7 +20,8 @@ public class ValidationNodeBuilder {
 
 	}
 
-	public static INode<Item> build(Customers customers, Map<String, Map<String, String>> redisCatalogueItems) {
+	public static INode<Item> build(Customers customers,
+			IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint) {
 
 		if (validationNode != null) {
 
@@ -27,11 +29,12 @@ public class ValidationNodeBuilder {
 		} else {
 
 			validationNode = new ItemBaseTypeValidatonNode(new ItemBaseTypeValidator(customers),
-					new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(customers, redisCatalogueItems), new ItemCategoryValidatonNode(
-							new ItemCategoryValidator(customers), new ItemIdValidatonNode(
-									new ItemIdValidator(customers, redisCatalogueItems), new ItemShipToLocationIdValidatonNode(
-											new ItemShipToLocationIdValidator(customers), new ItemUomValidatonNode(
-													new ItemUomValidator(customers), null))))));
+					new ItemUomValidatonNode(new ItemUomValidator(customers),
+							new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(customers, redisCacheEndPoint),
+									new ItemCategoryValidatonNode(new ItemCategoryValidator(customers),
+											new ItemIdValidatonNode(new ItemIdValidator(customers, redisCacheEndPoint),
+													new ItemShipToLocationIdValidatonNode(
+															new ItemShipToLocationIdValidator(customers), null))))));
 			return validationNode;
 		}
 	}

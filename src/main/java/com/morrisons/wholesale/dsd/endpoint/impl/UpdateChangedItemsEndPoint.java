@@ -4,6 +4,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
@@ -11,6 +12,7 @@ import com.morrisons.wholesale.dsd.endpoint.BasePutEndPoint;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
+@Component("updateChangedItemsEndPoint")
 public class UpdateChangedItemsEndPoint extends BasePutEndPoint<UpdateItemPayload, Response> {
 
 	@Autowired

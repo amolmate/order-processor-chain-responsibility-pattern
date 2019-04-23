@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Configuration
-public class Redisconfig {
+public class RedisConfig {
 
 	private String endpoint;
 
