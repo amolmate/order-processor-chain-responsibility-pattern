@@ -2,16 +2,16 @@ package com.morrisons.wholesale.dsd.validation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
+import org.mockito.internal.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.morrisons.wholesale.dsd.config.Customer;
 import com.morrisons.wholesale.dsd.dto.Audit;
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
@@ -19,6 +19,8 @@ import com.morrisons.wholesale.dsd.dto.ItemAlternateId;
 import com.morrisons.wholesale.dsd.dto.ItemStatus;
 import com.morrisons.wholesale.dsd.dto.Order;
 import com.morrisons.wholesale.dsd.dto.Orders;
+import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
+import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
@@ -32,13 +34,13 @@ public class ValidationClient {
 
 	private IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint;
 
-	private IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint;
-	
+	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
+
 	private Customers customers;
 
 	@Autowired
 	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint,
-			IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint) {
+			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
 		this.redisCacheEndPoint = redisCacheEndPoint;
@@ -47,7 +49,7 @@ public class ValidationClient {
 	public void initialize(List<Orders> orders, Customers customers) {
 
 		this.customers = customers;
-		
+
 		node = ValidationNodeBuilder.build(customers, redisCacheEndPoint);
 
 		orders.forEach(s -> s.getOrders().forEach(this::processOrder));
@@ -56,32 +58,43 @@ public class ValidationClient {
 	private void processItem(Item item) {
 
 		node.processNode(item);
-		
-		if(item.isItemValidated()) {
-			
+
+		if (item.isItemValidated()) {
+
 			enrichItemWithIdentifier(item);
 			enrichFieldsForItem(item);
 		}
 	}
-	
+
 	private void enrichItemWithIdentifier(Item item) {
-		
-		String identifier;
-		customers.getCustomers().forEach(c -> c.getSupportedSuppliers().stream().filter(s -> s.getName().equals(item.getSupplierName())).findFirst());
-		
-		Map<String, Object> itemFromCache = getItemFromRedisCacheCatlogue("");
-		
+
+		customers.getCustomers().forEach(c -> c.getSupportedSuppliers().forEach(s -> getIdentifier(item, s)));
 	}
 
-	private String getIdentifier(){
-		
-		return null;
+	private void getIdentifier(Item item, SupportedSupplier supplier) {
+
+		String supplierName = supplier.getName();
+
+		if (StringUtils.isNotBlank(supplierName)) {
+
+			if (supplierName.equals(item.getSupplierName())) {
+
+				getValueFromRedisAndEnrich(item, supplier.getIdentifier());
+			}
+		}
 	}
-	
+
+	private void getValueFromRedisAndEnrich(Item item, String identifier) {
+
+		RedisCatlogueItem redisItem = getItemFromRedisCacheCatlogue(identifier);
+		// likewise enrich all items
+		item.setSkuMin(redisItem.getMin());
+	}
+
 	private void enrichFieldsForItem(Item item) {
-		
+
 	}
-	
+
 	private void processOrder(Order order) {
 
 		order.getItems().stream().forEach(this::processItem);
@@ -113,10 +126,9 @@ public class ValidationClient {
 
 		UpdateItemPayload payload = new UpdateItemPayload();
 		Audit audit = new Audit();
-		audit.setCorrelationId(
-				verfiyAndGenerateCorrelationId(Optional.ofNullable(order.getAudit().get(0).getCorrelationId())));
-		audit.setWho(order.getAudit().get(0).getWho());
-		audit.setWhen(order.getAudit().get(0).getWhen());
+		audit.setCorrelationId(verfiyAndGenerateCorrelationId());
+		audit.setWho("");
+		audit.setWhen("");
 		payload.setAudit(audit);
 		payload.setStatus(order.getStatus());
 		payload.setItems(getItemsStatus(order.getItems()));
@@ -141,13 +153,13 @@ public class ValidationClient {
 		return itemStatusList;
 	}
 
-	private String verfiyAndGenerateCorrelationId(Optional<String> correlationId) {
+	private String verfiyAndGenerateCorrelationId() {
 
-		return correlationId.isPresent() ? correlationId.get() : UUID.randomUUID().toString();
+		return StringUtil.join(UUID.randomUUID().toString(), System.currentTimeMillis());
 	}
-	
-	private Map<String, Object> getItemFromRedisCacheCatlogue(String key) {
-		
-		return null;
+
+	private RedisCatlogueItem getItemFromRedisCacheCatlogue(String key) {
+
+		return redisCacheEndPoint.get(key);
 	}
 }

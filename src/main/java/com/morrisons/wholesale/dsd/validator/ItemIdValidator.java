@@ -6,14 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 
 public class ItemIdValidator extends BaseValidator<Item> {
 
-	private IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint;
+	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
 
-	public ItemIdValidator(Customers customers,
-			IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint) {
+	public ItemIdValidator(Customers customers, IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
 		super(customers);
 		this.redisCacheEndPoint = redisCacheEndPoint;

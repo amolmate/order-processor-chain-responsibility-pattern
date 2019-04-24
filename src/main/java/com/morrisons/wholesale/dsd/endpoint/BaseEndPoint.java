@@ -30,6 +30,7 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
  * @param <O>
  *            Output Structure
  */
+
 public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseEndPoint.class);
@@ -62,6 +63,7 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 	protected void printRequest(I input) {
 
 		try {
+			
 			ObjectMapper objectMapper = new ObjectMapper();
 			String out = objectMapper.writeValueAsString(input);
 

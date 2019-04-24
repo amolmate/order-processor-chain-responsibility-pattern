@@ -61,5 +61,7 @@ public class Item {
 	
 	private String orderLevelStatus;
 	
+	private String skuMin;
+	
 	private boolean isItemValidated;
 }

@@ -1,9 +1,8 @@
 package com.morrisons.wholesale.dsd.validation;
 
-import java.util.Map;
-
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
+import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCaseSizeValidator;
@@ -21,7 +20,7 @@ public class ValidationNodeBuilder {
 	}
 
 	public static INode<Item> build(Customers customers,
-			IRedisCacheEndPoint<String, Map<String, Map<String, String>>> redisCacheEndPoint) {
+			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
 		if (validationNode != null) {
 
