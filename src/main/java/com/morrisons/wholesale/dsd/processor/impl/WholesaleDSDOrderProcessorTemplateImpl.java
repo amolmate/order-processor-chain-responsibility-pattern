@@ -33,12 +33,13 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	private ConfigService configService;
 
 	private ValidationClient validationClient;
-	
-	private AggregationService aggregationService; 
+
+	private AggregationService aggregationService;
 
 	@Autowired
 	public WholesaleDSDOrderProcessorTemplateImpl(GetOrdersEndpointGenerator generator,
-			IThreadExecutor<Orders> threadExecutor, ConfigService configService, ValidationClient client, AggregationService aggregationService) {
+			IThreadExecutor<Orders> threadExecutor, ConfigService configService, ValidationClient client,
+			AggregationService aggregationService) {
 
 		this.getOrdersEndpointGenerator = generator;
 		this.threadExecutor = threadExecutor;
@@ -71,7 +72,12 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	protected NodeResult validateDSDOrders(List<Orders> ordersList, Customers customers) {
 
 		validationClient.initialize(ordersList, customers);
-		aggregationService.aggregate();
 		return null;
+	}
+
+	@Override
+	protected void aggregateOrders() {
+
+		aggregationService.aggregate();
 	}
 }

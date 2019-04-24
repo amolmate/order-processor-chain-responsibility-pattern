@@ -1,18 +1,19 @@
 package com.morrisons.wholesale.dsd.validation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mockito.internal.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.dto.Audit;
+import com.morrisons.wholesale.dsd.dto.Customer;
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.ItemAlternateId;
@@ -36,7 +37,7 @@ public class ValidationClient {
 
 	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
 
-	private Customers customers;
+	private Map<String, Map<String, SupportedSupplier>> customerMap;
 
 	@Autowired
 	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint,
@@ -48,11 +49,32 @@ public class ValidationClient {
 
 	public void initialize(List<Orders> orders, Customers customers) {
 
-		this.customers = customers;
+		createCustomerMap(customers);
 
 		node = ValidationNodeBuilder.build(customers, redisCacheEndPoint);
 
 		orders.forEach(s -> s.getOrders().forEach(this::processOrder));
+	}
+
+	private void createCustomerMap(Customers customers) {
+
+		List<Customer> customerList = customers.getCustomers();
+
+		customerMap = new HashMap<>();
+
+		for (Customer customer : customerList) {
+
+			Map<String, SupportedSupplier> supplierMap = new HashMap<>();
+
+			List<SupportedSupplier> supplierList = customer.getSupportedSuppliers();
+
+			for (SupportedSupplier supplier : supplierList) {
+
+				supplierMap.put(supplier.getName(), supplier);
+			}
+
+			customerMap.put(customer.getName(), supplierMap);
+		}
 	}
 
 	private void processItem(Item item) {
@@ -62,37 +84,20 @@ public class ValidationClient {
 		if (item.isItemValidated()) {
 
 			enrichItemWithIdentifier(item);
-			enrichFieldsForItem(item);
 		}
 	}
 
 	private void enrichItemWithIdentifier(Item item) {
 
-		customers.getCustomers().forEach(c -> c.getSupportedSuppliers().forEach(s -> getIdentifier(item, s)));
-	}
-
-	private void getIdentifier(Item item, SupportedSupplier supplier) {
-
-		String supplierName = supplier.getName();
-
-		if (StringUtils.isNotBlank(supplierName)) {
-
-			if (supplierName.equals(item.getSupplierName())) {
-
-				getValueFromRedisAndEnrich(item, supplier.getIdentifier());
-			}
-		}
+		Map<String, SupportedSupplier> supplierMap = customerMap.get(item.getCustomerName());
+		SupportedSupplier supplier = supplierMap.get(item.getSupplierName());
+		getValueFromRedisAndEnrich(item, supplier.getIdentifier());
 	}
 
 	private void getValueFromRedisAndEnrich(Item item, String identifier) {
 
 		RedisCatlogueItem redisItem = getItemFromRedisCacheCatlogue(identifier);
-		// likewise enrich all items
 		item.setSkuMin(redisItem.getMin());
-	}
-
-	private void enrichFieldsForItem(Item item) {
-
 	}
 
 	private void processOrder(Order order) {
