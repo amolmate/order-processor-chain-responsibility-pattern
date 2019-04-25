@@ -76,8 +76,8 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	}
 
 	@Override
-	protected void aggregateOrders() {
+	protected void aggregateOrders(Customers customers) {
 
-		aggregationService.aggregate();
+		customers.getCustomers().forEach(c -> aggregationService.aggregate(c.getName()));
 	}
 }

@@ -3,15 +3,25 @@ package com.morrisons.wholesale.dsd.thread;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.eclipse.persistence.sessions.server.ExternalConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import com.morrisons.wholesale.dsd.config.ApplicationConfig;
+import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.util.SpringRestTemplateURIUtility;
 
 public class FetchDSDOrdersThread implements Callable<Orders> {
 
@@ -20,7 +30,16 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 	private ParameterMappings parameterMappings;
 
 	private IBaseGetEndPoint<Orders> getDSDOrdersEndPoint;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
+	@Autowired
+	private SpringRestTemplateURIUtility springRestTemplateURIUtility;
+	
+	@Autowired
+	private ExternalServiceConfig dSDOrdersConfig;
+	
 	public FetchDSDOrdersThread(IBaseGetEndPoint<Orders> getDSDOrdersEndPoint, ParameterMappings parameterMappings) {
 
 		this.getDSDOrdersEndPoint = getDSDOrdersEndPoint;
@@ -34,7 +53,17 @@ public class FetchDSDOrdersThread implements Callable<Orders> {
 
 			// call get order end point here
 
-			Orders orders = getDSDOrdersEndPoint.get(parameterMappings);
+			//Orders orders = getDSDOrdersEndPoint.get(parameterMappings);
+			//String uri = null;
+			
+			String uri = springRestTemplateURIUtility.getDSDOrderServiceConfig(parameterMappings);
+
+			HttpEntity<HttpHeaders> httpHeaderEntity = springRestTemplateURIUtility
+					.getHeaderEntity(dSDOrdersConfig.getAuthorization());
+
+			ResponseEntity<Orders> response = restTemplate.exchange(uri, HttpMethod.GET, httpHeaderEntity,
+					Orders.class);
+			Orders orders = response.getBody();
 
 			List<ParameterMapping> pathParameters = parameterMappings.getPathParameters();
 

@@ -32,4 +32,29 @@ public class WholesaleDSDOrderProcessorTask implements CommandLineRunner {
 		log.debug("WholesaleDSDOrderProcessorTask started");
 		wholesaleDSDOrderProcessor.processTask();
 	}
+	
+	private class TestRunnable implements Runnable{
+
+		private int number;
+		
+		public TestRunnable(int number) {
+
+			this.number = number;
+		}
+		
+		@Override
+		public void run() {
+
+			System.out.println("Print task start");
+			System.out.println("print number " + number);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("Print task end");
+		}
+		
+	}
 }

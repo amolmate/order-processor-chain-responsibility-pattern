@@ -41,6 +41,8 @@ public class ApplicationConfig {
 	private ExternalServiceConfig dSDOrdersConfig;
 
 	private ExternalServiceConfig updateItemConfig;
+	
+	private ExternalServiceConfig pollingConfig;
 
 	private RedisConfig redis;
 
@@ -55,7 +57,20 @@ public class ApplicationConfig {
 
 		return dSDOrdersConfig;
 	}
+	
+	@Bean("pollingConfig")
+	public ExternalServiceConfig getPollingConfig() {
 
+		return pollingConfig;
+	}
+
+	@Bean("redisConfig")
+	public RedisConfig getRedisConfig() {
+
+		return redis;
+	}
+
+	
 	@Bean
 	public Client getJersyClient() {
 
@@ -68,7 +83,7 @@ public class ApplicationConfig {
 		return new JerseyPatchClientProvider(getProxyConfig()).get();
 	}
 
-	@Bean
+	@Bean("redissonClient")
 	public RedissonClient redissonClient() {
 
 		Config config = new Config();

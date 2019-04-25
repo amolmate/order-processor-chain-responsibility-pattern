@@ -11,7 +11,7 @@ import com.morrisons.wholesale.dsd.config.ApplicationConfig;
 import com.morrisons.wholesale.dsd.dao.EventDAO;
 import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 
-@Service
+@Service("configService")
 public class ConfigServiceImpl implements ConfigService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigServiceImpl.class);

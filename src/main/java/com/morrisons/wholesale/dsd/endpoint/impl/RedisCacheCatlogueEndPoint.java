@@ -8,7 +8,7 @@ import com.morrisons.wholesale.dsd.config.RedisConfig;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 
-@Component
+@Component("redisCacheEndPoint")
 public class RedisCacheCatlogueEndPoint implements IRedisCacheEndPoint<String, RedisCatlogueItem> {
 
 	private RedissonClient redissonClient;
@@ -16,10 +16,10 @@ public class RedisCacheCatlogueEndPoint implements IRedisCacheEndPoint<String, R
 	private RedisConfig redisConfig;
 
 	@Autowired
-	public RedisCacheCatlogueEndPoint(RedissonClient redissonClient, RedisConfig config) {
+	public RedisCacheCatlogueEndPoint(RedissonClient redissonClient, RedisConfig redisConfig) {
 
 		this.redissonClient = redissonClient;
-		this.redisConfig = config;
+		this.redisConfig = redisConfig;
 	}
 
 	@Override

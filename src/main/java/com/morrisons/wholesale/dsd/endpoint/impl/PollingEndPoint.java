@@ -7,39 +7,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
-import com.morrisons.wholesale.dsd.dto.AggregationPayload;
-import com.morrisons.wholesale.dsd.endpoint.BasePostEndPoint;
+import com.morrisons.wholesale.dsd.dto.PollingResponse;
+import com.morrisons.wholesale.dsd.endpoint.BaseGetEndPoint;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
-@Component("aggregationEndPoint")
-public class AggregationEndPoint extends BasePostEndPoint<AggregationPayload, Response> {
+@Component("pollingEndPoint")
+public class PollingEndPoint extends BaseGetEndPoint<PollingResponse> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public AggregationEndPoint(Client client, ExternalServiceConfig updateItemConfig) {
+	public PollingEndPoint(Client client, ExternalServiceConfig pollingConfig) {
 
-		super(client, updateItemConfig);
+		super(client, pollingConfig);
 	}
 
 	@Override
-	protected Class<Response> getOutputEntityClass() {
+	protected Class<PollingResponse> getOutputEntityClass() {
 
-		return Response.class;
+		return PollingResponse.class;
 	}
 
 	@Override
 	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
 
-		return exceptionFactory.createException(ErrorCodes.UPDATE_CHANGED_ITEMS_ERR, message, status);
+		return exceptionFactory.createException(ErrorCodes.GET_DSD_ORDERS_ERR, message, status);
 	}
 
 	@Override
-	protected Response getOutputEntity(Response response) {
+	protected PollingResponse getOutputEntity(Response response) {
 
-		return response;
+		return (PollingResponse) response.getEntity();
 	}
 
 	@Override

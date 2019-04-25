@@ -15,7 +15,7 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 		validateDSDOrders(orders, data);
 		
 		// aggregate orders
-		aggregateOrders();
+		aggregateOrders(data);
 	}
 
 	protected abstract D getDataFromConifgService();
@@ -24,5 +24,5 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 	
 	protected abstract R validateDSDOrders(O orders, D data);
 	
-	protected abstract void aggregateOrders();
+	protected abstract void aggregateOrders(D data);
 }
