@@ -6,16 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.morrisons.wholesale.dsd.aggregationservice.AggregationService;
 import com.morrisons.wholesale.dsd.configservice.ConfigService;
-import com.morrisons.wholesale.dsd.configservice.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.impl.GetOrdersEndpointGenerator;
 import com.morrisons.wholesale.dsd.processor.WholesaleDSDOrderProcessorTemplate;
 import com.morrisons.wholesale.dsd.threadexecutor.IThreadExecutor;
+import com.morrisons.wholesale.dsd.util.Util;
 import com.morrisons.wholesale.dsd.validation.NodeResult;
 import com.morrisons.wholesale.dsd.validation.ValidationClient;
 
@@ -51,9 +49,7 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	@Override
 	protected Customers getDataFromConifgService() {
 
-		return new ObjectMapper().convertValue(configService.getCustomersFromConfigService(),
-				new TypeReference<OrderServiceConfigDescriptor>() {
-				});
+		return Util.convertMapToDTO(configService.getCustomersFromConfigService());
 	}
 
 	@Override

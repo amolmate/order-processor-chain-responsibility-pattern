@@ -7,8 +7,10 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.morrisons.wholesale.dsd.provider.JerseyClientProvider;
 import com.morrisons.wholesale.dsd.provider.JerseyPatchClientProvider;
@@ -82,6 +84,12 @@ public class ApplicationConfig {
 
 		return new JerseyPatchClientProvider(getProxyConfig()).get();
 	}
+	
+	@Bean("restTemplate")
+	public RestTemplate getRestTemplate(RestTemplateBuilder builder) {
+		
+		return builder.build();
+	} 
 
 	@Bean("redissonClient")
 	public RedissonClient redissonClient() {

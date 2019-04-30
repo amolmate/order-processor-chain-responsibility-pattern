@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.ws.rs.core.Response;
-
 import org.mockito.internal.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,14 +31,14 @@ public class ValidationClient {
 
 	private INode<Item> node;
 
-	private IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint;
+	private IBasePutEndPoint<UpdateItemPayload, String> updateChangedItemsEndPoint;
 
 	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
 
 	private Map<String, Map<String, SupportedSupplier>> customerMap;
 
 	@Autowired
-	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, Response> updateChangedItemsEndPoint,
+	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, String> updateChangedItemsEndPoint,
 			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
