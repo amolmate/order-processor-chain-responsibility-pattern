@@ -9,7 +9,6 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.morrisons.wholesale.dsd.config.ApplicationConfig;
 import com.morrisons.wholesale.dsd.dao.EventDAO;
-import com.morrisons.wholesale.dsd.endpoint.impl.OrderServiceConfigDescriptor;
 
 @Service("configService")
 public class ConfigServiceImpl implements ConfigService {

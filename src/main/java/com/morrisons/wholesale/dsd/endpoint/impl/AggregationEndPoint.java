@@ -1,33 +1,38 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.AggregationPayload;
-import com.morrisons.wholesale.dsd.endpoint.BasePostEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBasePostEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("aggregationEndPoint")
-public class AggregationEndPoint extends BasePostEndPoint<AggregationPayload, Response> {
+public class AggregationEndPoint extends BaseEndPoint<AggregationPayload, String>
+		implements IBasePostEndPoint<AggregationPayload, String> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public AggregationEndPoint(Client client, ExternalServiceConfig updateItemConfig) {
+	public AggregationEndPoint(RestTemplate restTemplate, ExternalServiceConfig updateItemConfig) {
 
-		super(client, updateItemConfig);
+		super(restTemplate, updateItemConfig);
 	}
 
 	@Override
-	protected Class<Response> getOutputEntityClass() {
+	protected Class<String> getOutputEntityClass() {
 
-		return Response.class;
+		return String.class;
 	}
 
 	@Override
@@ -37,14 +42,26 @@ public class AggregationEndPoint extends BasePostEndPoint<AggregationPayload, Re
 	}
 
 	@Override
-	protected Response getOutputEntity(Response response) {
-
-		return response;
-	}
-
-	@Override
 	protected boolean isStatusValid(int status) {
 
 		return status == Response.Status.ACCEPTED.getStatusCode();
+	}
+
+	@Override
+	protected HttpMethod getHttpMethod() {
+
+		return HttpMethod.POST;
+	}
+
+	@Override
+	public String post(ParameterMappings parameterMappings, AggregationPayload input) {
+
+		return send(parameterMappings, input);
+	}
+
+	@Override
+	protected String getOutputEntity(ResponseEntity<String> response) {
+
+		return null;
 	}
 }

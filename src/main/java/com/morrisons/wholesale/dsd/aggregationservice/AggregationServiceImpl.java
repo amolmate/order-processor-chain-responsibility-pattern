@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.morrisons.wholesale.dsd.dto.AggregationPayload;
 import com.morrisons.wholesale.dsd.dto.PollingResponse;
-import com.morrisons.wholesale.dsd.endpoint.BasePostEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBasePostEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
@@ -28,30 +25,31 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 @Service
 public class AggregationServiceImpl implements AggregationService {
 
-	private IBasePostEndPoint<AggregationPayload, Response> basePostEndPoint;
+	private IBasePostEndPoint<AggregationPayload, String> aggregationEndPoint;
 
 	private IBaseGetEndPoint<PollingResponse> pollingEndPoint;
 
 	private static final long INTERVAL = 120000;
 
 	@Autowired
-	public AggregationServiceImpl(BasePostEndPoint<AggregationPayload, Response> aggregationEndPoint,
+	public AggregationServiceImpl(IBasePostEndPoint<AggregationPayload, String> aggregationEndPoint,
 			IBaseGetEndPoint<PollingResponse> pollingEndPoint) {
 
-		this.basePostEndPoint = basePostEndPoint;
+		this.aggregationEndPoint = aggregationEndPoint;
 		this.pollingEndPoint = pollingEndPoint;
 	}
 
 	@Override
 	public void aggregate(String customerId) {
 
-		Response response = basePostEndPoint.post(getParameterMappings(customerId), getAggregationPayload());
-		String jobId = (String) response.getEntity();
+		String response = aggregationEndPoint.post(getParameterMappings(customerId), getAggregationPayload());
+		// get jobId from response
+		String jobId = response;
 		startPolling(customerId, jobId);
 	}
 
 	private void startPolling(String customerId, String jobId) {
-		
+
 		long pollingTime = System.currentTimeMillis();
 
 		Map<Object, ScheduledFuture<?>> scheduledTasksMap = new ConcurrentHashMap<>();
@@ -63,7 +61,7 @@ public class AggregationServiceImpl implements AggregationService {
 		Runnable task = new PollingTask(customerId, jobId, scheduledTasksMap, pollingTime);
 
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task;
-		
+
 		Instant startTime = Instant.now().plusMillis(500);
 
 		ScheduledFuture<?> future = taskScheduler.scheduleWithFixedDelay(task, startTime, duration);
@@ -83,27 +81,27 @@ public class AggregationServiceImpl implements AggregationService {
 	private AggregationPayload getAggregationPayload() {
 
 		AggregationPayload aggregationPayload = new AggregationPayload();
-		/*
-		 * aggregationPayload.setEndTime(endTime); aggregationPayload.setId(id);
-		 * aggregationPayload.setName(name);
-		 * aggregationPayload.setStartTime(startTime);
-		 */
+
+		aggregationPayload.setEndTime("endTime");
+		aggregationPayload.setId("id");
+		aggregationPayload.setName("name");
+		aggregationPayload.setStartTime("startTime");
+
 		return aggregationPayload;
 	}
-	
-	
 
 	private class PollingTask implements Runnable {
 
 		private String customerId;
 
 		private String jobId;
-		
+
 		private Map<Object, ScheduledFuture<?>> scheduledTasksMap;
-		
+
 		private long pollingTime;
 
-		public PollingTask(String customerId, String jobId, Map<Object, ScheduledFuture<?>> scheduledTasksMap, long pollingTime) {
+		public PollingTask(String customerId, String jobId, Map<Object, ScheduledFuture<?>> scheduledTasksMap,
+				long pollingTime) {
 
 			this.customerId = customerId;
 			this.jobId = jobId;

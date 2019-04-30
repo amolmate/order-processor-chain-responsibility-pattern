@@ -1,4 +1,4 @@
-package com.morrisons.wholesale.dsd.endpoint.impl;
+package com.morrisons.wholesale.dsd.configservice;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

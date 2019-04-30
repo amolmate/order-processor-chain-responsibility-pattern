@@ -1,27 +1,33 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.PollingResponse;
-import com.morrisons.wholesale.dsd.endpoint.BaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("pollingEndPoint")
-public class PollingEndPoint extends BaseGetEndPoint<PollingResponse> {
+public class PollingEndPoint extends BaseEndPoint<HttpHeaders, PollingResponse>
+		implements IBaseGetEndPoint<PollingResponse> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public PollingEndPoint(Client client, ExternalServiceConfig pollingConfig) {
+	public PollingEndPoint(RestTemplate restTemplate, ExternalServiceConfig pollingConfig) {
 
-		super(client, pollingConfig);
+		super(restTemplate, pollingConfig);
 	}
 
 	@Override
@@ -37,14 +43,23 @@ public class PollingEndPoint extends BaseGetEndPoint<PollingResponse> {
 	}
 
 	@Override
-	protected PollingResponse getOutputEntity(Response response) {
-
-		return (PollingResponse) response.getEntity();
-	}
-
-	@Override
 	protected boolean isStatusValid(int status) {
 
 		return status == Response.Status.ACCEPTED.getStatusCode();
+	}
+
+	@Override
+	public PollingResponse get(ParameterMappings parameterMappings) {
+		return send(parameterMappings, null);
+	}
+
+	@Override
+	protected HttpMethod getHttpMethod() {
+		return null;
+	}
+
+	@Override
+	protected PollingResponse getOutputEntity(ResponseEntity<PollingResponse> response) {
+		return null;
 	}
 }

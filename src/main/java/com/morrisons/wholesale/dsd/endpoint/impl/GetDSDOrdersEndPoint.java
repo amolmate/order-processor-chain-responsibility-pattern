@@ -1,27 +1,32 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.Orders;
-import com.morrisons.wholesale.dsd.endpoint.BaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("getDSDOrdersEndPoint")
-public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Orders> {
+public class GetDSDOrdersEndPoint extends BaseEndPoint<HttpHeaders, Orders> implements IBaseGetEndPoint<Orders> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public GetDSDOrdersEndPoint(Client client, ExternalServiceConfig dSDOrdersConfig) {
+	public GetDSDOrdersEndPoint(RestTemplate restTemplate, ExternalServiceConfig dSDOrdersConfig) {
 
-		super(client, dSDOrdersConfig);
+		super(restTemplate, dSDOrdersConfig);
 	}
 
 	@Override
@@ -37,14 +42,26 @@ public class GetDSDOrdersEndPoint extends BaseGetEndPoint<Orders> {
 	}
 
 	@Override
-	protected Orders getOutputEntity(Response response) {
-
-		return (Orders) response.getEntity();
-	}
-
-	@Override
 	protected boolean isStatusValid(int status) {
 
 		return status == Response.Status.ACCEPTED.getStatusCode();
+	}
+
+	@Override
+	public Orders get(ParameterMappings parameterMappings) {
+
+		return send(parameterMappings, null);
+	}
+
+	@Override
+	protected HttpMethod getHttpMethod() {
+
+		return HttpMethod.GET;
+	}
+
+	@Override
+	protected Orders getOutputEntity(ResponseEntity<Orders> response) {
+
+		return response.getBody();
 	}
 }

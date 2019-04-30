@@ -1,33 +1,38 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
-import com.morrisons.wholesale.dsd.endpoint.BasePutEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.ErrorCodes;
 import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("updateChangedItemsEndPoint")
-public class UpdateChangedItemsEndPoint extends BasePutEndPoint<UpdateItemPayload, Response> {
+public class UpdateChangedItemsEndPoint extends BaseEndPoint<UpdateItemPayload, String>
+		implements IBasePutEndPoint<UpdateItemPayload, String> {
 
 	@Autowired
 	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
-	public UpdateChangedItemsEndPoint(Client client, ExternalServiceConfig updateItemConfig) {
+	public UpdateChangedItemsEndPoint(RestTemplate restTemplate, ExternalServiceConfig updateItemConfig) {
 
-		super(client, updateItemConfig);
+		super(restTemplate, updateItemConfig);
 	}
 
 	@Override
-	protected Class<Response> getOutputEntityClass() {
+	protected Class<String> getOutputEntityClass() {
 
-		return Response.class;
+		return String.class;
 	}
 
 	@Override
@@ -37,14 +42,26 @@ public class UpdateChangedItemsEndPoint extends BasePutEndPoint<UpdateItemPayloa
 	}
 
 	@Override
-	protected Response getOutputEntity(Response response) {
-
-		return response;
-	}
-
-	@Override
 	protected boolean isStatusValid(int status) {
 
 		return status == Response.Status.ACCEPTED.getStatusCode();
+	}
+
+	@Override
+	protected HttpMethod getHttpMethod() {
+
+		return HttpMethod.PUT;
+	}
+
+	@Override
+	public String put(ParameterMappings parameterMappings, UpdateItemPayload input) {
+
+		return send(parameterMappings, input);
+	}
+
+	@Override
+	protected String getOutputEntity(ResponseEntity<String> response) {
+
+		return null;
 	}
 }
