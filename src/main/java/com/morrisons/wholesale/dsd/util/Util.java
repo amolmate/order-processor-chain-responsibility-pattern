@@ -40,7 +40,7 @@ public final class Util {
 
 					SupportedSupplier supplier = new SupportedSupplier();
 
-					Map<String, String> configMap = (Map<String, String>) supplierMap.get("configuration");
+					//Map<String, String> configMap = (Map<String, String>) supplierMap.get("configuration");
 
 					Configuration configuration = new Configuration();
 
