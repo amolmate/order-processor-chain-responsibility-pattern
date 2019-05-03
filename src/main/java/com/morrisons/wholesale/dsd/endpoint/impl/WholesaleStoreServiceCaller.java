@@ -37,7 +37,7 @@ public class WholesaleStoreServiceCaller {
 
 	private static final long INTERVAL = 10;
 	
-	private AtomicInteger retryCounter = new AtomicInteger();
+	private boolean isRetryStoreCallSuccess = true;
 
 	@Autowired
 	public WholesaleStoreServiceCaller(IBaseGetEndPoint<ResponseEntity<Categories>> wholesaleStoreServiceEndPoint,
@@ -57,13 +57,9 @@ public class WholesaleStoreServiceCaller {
 
 			if (response.getStatusCodeValue() == 200) {
 
-				Categories categories = response.getBody();
+				return getVirtualSellingLocation(response.getBody());
 
-				List<StoreCategory> storeCategory = categories.getStoreCategories();
-
-				List<DeliveryOpportunity> deliveryOpportunities = storeCategory.get(0).getDeliveryOpportunities();
-
-				return deliveryOpportunities.get(0).getTransitInformation().getVirtualSellingLocation();
+				
 			} else {
 
 				if (response.getStatusCodeValue() == 400) {
@@ -71,7 +67,6 @@ public class WholesaleStoreServiceCaller {
 					return null;
 				} else if (response.getStatusCodeValue() == 500) {
 					
-					retryCounter.set(0);
 					retryStoreServiceCall(mappings);
 				}
 			}
@@ -84,7 +79,16 @@ public class WholesaleStoreServiceCaller {
 		return null;
 	}
 
-	public void retryStoreServiceCall(ParameterMappings mappings) {
+	private String getVirtualSellingLocation(Categories categories) {
+		
+		List<StoreCategory> storeCategory = categories.getStoreCategories();
+
+		List<DeliveryOpportunity> deliveryOpportunities = storeCategory.get(0).getDeliveryOpportunities();
+
+		return deliveryOpportunities.get(0).getTransitInformation().getVirtualSellingLocation();
+	}
+	
+	private void retryStoreServiceCall(ParameterMappings mappings) {
 
 		Map<Object, ScheduledFuture<?>> scheduledTasksMap = new ConcurrentHashMap<>();
 
@@ -128,26 +132,34 @@ public class WholesaleStoreServiceCaller {
 		private ParameterMappings mappings;
 
 		private Map<Object, ScheduledFuture<?>> scheduledTasksMap;
-
-		public PollToStoreService(ParameterMappings mappings, Map<Object, ScheduledFuture<?>> scheduledTasksMap) {
+		
+		private int retryCounter = 0;
+		
+		private ResultHolder holder;
+		
+		public PollToStoreService(ParameterMappings mappings, Map<Object, ScheduledFuture<?>> scheduledTasksMap, ResultHolder holder) {
 
 			this.mappings = mappings;
 			this.scheduledTasksMap = scheduledTasksMap;
+			this.holder = holder;
 		}
 
 		@Override
 		public void run() {
 
 			ResponseEntity<Categories> response = wholesaleStoreServiceEndPoint.get(mappings);
+			
+			retryCounter += 1;
 
-			if (response.getStatusCodeValue() == 400 || retryCounter.get() > 4) {
-
-				cancelAllTasks();
-			} else if(response.getStatusCodeValue() == 500) {
+			if (response.getStatusCodeValue() == 400 || retryCounter > 4) {
 				
-				retryCounter.incrementAndGet();
+				isRetryStoreCallSuccess = false;
+				cancelAllTasks();
 			} else if(response.getStatusCodeValue() == 200) {
 				
+				isRetryStoreCallSuccess = true;
+				getVirtualSellingLocation(response.getBody());
+				cancelAllTasks();
 			}
 		}
 
@@ -159,6 +171,19 @@ public class WholesaleStoreServiceCaller {
 					v.cancel(false);
 				}
 			});
+		}
+	}
+	
+	private class ResultHolder {
+		
+		private String resultOfStoreServiceCall;
+
+		public String getResultOfStoreServiceCall() {
+			return resultOfStoreServiceCall;
+		}
+
+		public void setResultOfStoreServiceCall(String resultOfStoreServiceCall) {
+			this.resultOfStoreServiceCall = resultOfStoreServiceCall;
 		}
 	}
 }
