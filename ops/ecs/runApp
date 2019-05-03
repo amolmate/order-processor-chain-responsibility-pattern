@@ -1,1 +1,1 @@
-java -Xmx2048m -Xms2048m -jar /app/wh/orderreconciliation/bin/wholesale-amazon-orders-reconciliation-1.0.jar --spring.profiles.active=$1
+java -Xmx2048m -Xms2048m -jar /app/wh/orderprocessor/bin/wholesale-dsd-order-processor-1.0.jar --spring.profiles.active=$1
