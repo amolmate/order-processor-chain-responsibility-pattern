@@ -1,17 +1,17 @@
 {
-  "family": "wholesale-amazon-orders-reconciliation-sit",
+  "family": "wholesale-dsd-order-processor-sit",
   "taskRoleArn": "arn:aws:iam::020551178989:role/xxwmm_wholesale_orders_ecstask_role",
   "containerDefinitions": [
     {
-      "name": "wholesale-amazon-orders-reconciliation-sit",
-      "image": "020551178989.dkr.ecr.eu-west-1.amazonaws.com/wholesale/wholesale-amazon-orders-reconciliation:sit",
+      "name": "wholesale-dsd-order-processor-sit",
+      "image": "020551178989.dkr.ecr.eu-west-1.amazonaws.com/wholesale-dsd-order-processor:sit",
       "cpu": 200,
       "memory": 2048,
       "entryPoint": [
         "/bin/bash"
       ],
       "command": [
-        "/app/wh/orderreconciliation/bin/runApp",
+        "/app/wh/orderprocessor/bin/runApp",
         "sit"
       ],
       "portMappings": [
@@ -29,9 +29,9 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "wholesale-amazon-orders-reconciliation-sit",
+          "awslogs-group": "wholesale-dsd-order-processor-sit",
           "awslogs-region": "eu-west-1",
-          "awslogs-stream-prefix": "wholesale-amazon-orders-reconciliation"
+          "awslogs-stream-prefix": "wholesale-dsd-order-processor"
         }
       }
     }

@@ -2,7 +2,7 @@
 
 env=$1
 
-source ./app/wh/orderreconciliation/awsScripts/config.cfg
+source ./app/wh/orderprocessor/awsScripts/config.cfg
 
 if [[ ${env} == "prod" ]]; then
     images_to_delete=$( aws ecr list-images --repository-name ${imagename} --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json --profile ${prod_jenkinsawsuser} )

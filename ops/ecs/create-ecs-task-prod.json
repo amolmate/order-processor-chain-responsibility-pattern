@@ -13,7 +13,7 @@
         "/bin/bash"
       ],
       "command": [
-        "/app/wh/orderreconciliation/bin/runApp",
+        "/app/wh/orderprocessor/bin/runApp",
         "prod"
       ],
       "portMappings": [
