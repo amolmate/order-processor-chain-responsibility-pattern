@@ -63,7 +63,7 @@ public class WholesaleStoreServiceCaller {
 					return null;
 				} else if (response.getStatusCodeValue() == 500) {
 
-					retryStoreServiceCall(mappings);
+					return retryStoreServiceCall(mappings);
 				}
 			}
 
