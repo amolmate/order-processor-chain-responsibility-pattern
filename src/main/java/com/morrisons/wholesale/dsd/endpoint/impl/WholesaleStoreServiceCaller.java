@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +35,6 @@ public class WholesaleStoreServiceCaller {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WholesaleStoreServiceCaller.class);
 
 	private static final long INTERVAL = 10;
-	
-	private boolean isRetryStoreCallSuccess = true;
 
 	@Autowired
 	public WholesaleStoreServiceCaller(IBaseGetEndPoint<ResponseEntity<Categories>> wholesaleStoreServiceEndPoint,
@@ -59,14 +56,13 @@ public class WholesaleStoreServiceCaller {
 
 				return getVirtualSellingLocation(response.getBody());
 
-				
 			} else {
 
 				if (response.getStatusCodeValue() == 400) {
 
 					return null;
 				} else if (response.getStatusCodeValue() == 500) {
-					
+
 					retryStoreServiceCall(mappings);
 				}
 			}
@@ -80,23 +76,25 @@ public class WholesaleStoreServiceCaller {
 	}
 
 	private String getVirtualSellingLocation(Categories categories) {
-		
+
 		List<StoreCategory> storeCategory = categories.getStoreCategories();
 
 		List<DeliveryOpportunity> deliveryOpportunities = storeCategory.get(0).getDeliveryOpportunities();
 
 		return deliveryOpportunities.get(0).getTransitInformation().getVirtualSellingLocation();
 	}
-	
-	private void retryStoreServiceCall(ParameterMappings mappings) {
+
+	private String retryStoreServiceCall(ParameterMappings mappings) {
 
 		Map<Object, ScheduledFuture<?>> scheduledTasksMap = new ConcurrentHashMap<>();
+
+		ResultHolder holder = new ResultHolder();
 
 		TaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
 
 		Duration duration = Duration.ofSeconds(INTERVAL);
 
-		Runnable task = new PollToStoreService(mappings, scheduledTasksMap);
+		Runnable task = new PollToStoreService(mappings, scheduledTasksMap, holder);
 
 		ScheduledMethodRunnable runnable = (ScheduledMethodRunnable) task;
 
@@ -105,6 +103,14 @@ public class WholesaleStoreServiceCaller {
 		ScheduledFuture<?> future = taskScheduler.scheduleWithFixedDelay(task, startTime, duration);
 
 		scheduledTasksMap.put(runnable.getTarget(), future);
+
+		while (true) {
+
+			if (future.isDone()) {
+
+				return holder.getResultOfStoreServiceCall();
+			}
+		}
 	}
 
 	private ParameterMappings getParameterMappings(Item data) {
@@ -132,12 +138,13 @@ public class WholesaleStoreServiceCaller {
 		private ParameterMappings mappings;
 
 		private Map<Object, ScheduledFuture<?>> scheduledTasksMap;
-		
+
 		private int retryCounter = 0;
-		
+
 		private ResultHolder holder;
-		
-		public PollToStoreService(ParameterMappings mappings, Map<Object, ScheduledFuture<?>> scheduledTasksMap, ResultHolder holder) {
+
+		public PollToStoreService(ParameterMappings mappings, Map<Object, ScheduledFuture<?>> scheduledTasksMap,
+				ResultHolder holder) {
 
 			this.mappings = mappings;
 			this.scheduledTasksMap = scheduledTasksMap;
@@ -148,17 +155,15 @@ public class WholesaleStoreServiceCaller {
 		public void run() {
 
 			ResponseEntity<Categories> response = wholesaleStoreServiceEndPoint.get(mappings);
-			
+
 			retryCounter += 1;
 
 			if (response.getStatusCodeValue() == 400 || retryCounter > 4) {
-				
-				isRetryStoreCallSuccess = false;
+
 				cancelAllTasks();
-			} else if(response.getStatusCodeValue() == 200) {
-				
-				isRetryStoreCallSuccess = true;
-				getVirtualSellingLocation(response.getBody());
+			} else if (response.getStatusCodeValue() == 200) {
+
+				holder.setResultOfStoreServiceCall(getVirtualSellingLocation(response.getBody()));
 				cancelAllTasks();
 			}
 		}
@@ -166,16 +171,16 @@ public class WholesaleStoreServiceCaller {
 		private void cancelAllTasks() {
 
 			scheduledTasksMap.forEach((k, v) -> {
-				
+
 				if (k instanceof ScheduledFuture<?>) {
 					v.cancel(false);
 				}
 			});
 		}
 	}
-	
+
 	private class ResultHolder {
-		
+
 		private String resultOfStoreServiceCall;
 
 		public String getResultOfStoreServiceCall() {
