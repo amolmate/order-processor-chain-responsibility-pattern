@@ -143,9 +143,11 @@ public class WholesaleStoreServiceCaller {
 			if (response.getStatusCodeValue() == 400 || retryCounter.get() > 4) {
 
 				cancelAllTasks();
-			} else {
+			} else if(response.getStatusCodeValue() == 500) {
 				
 				retryCounter.incrementAndGet();
+			} else if(response.getStatusCodeValue() == 200) {
+				
 			}
 		}
 
