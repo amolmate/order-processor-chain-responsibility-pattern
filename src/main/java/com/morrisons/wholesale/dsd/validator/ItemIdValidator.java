@@ -4,25 +4,23 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 
 public class ItemIdValidator extends BaseValidator<Item> {
 
-	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
+	public ItemIdValidator(IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
-	public ItemIdValidator(Customers customers, IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
-
-		super(customers);
-		this.redisCacheEndPoint = redisCacheEndPoint;
+		super(redisCacheEndPoint);
 	}
 
 	@Override
 	public boolean validate(Item data) {
 
-		String itemIdFromRedisCatalogue = getItemIdFromRedisCatalogue(getItemFromRedisCatlogue(data));
+		String key = getRedisCacheKey(data);
+
+		String itemIdFromRedisCatalogue = getItemIdFromRedisCatalogue(getItemFromRedisCatlogue(key));
 
 		if (itemIdFromRedisCatalogue == null) {
 
@@ -37,6 +35,11 @@ public class ItemIdValidator extends BaseValidator<Item> {
 				return false;
 			}
 		}
+	}
+
+	private String getRedisCacheKey(Item data) {
+
+		return null;
 	}
 
 	private String getItemIdFromRedisCatalogue(Map<String, Object> map) {

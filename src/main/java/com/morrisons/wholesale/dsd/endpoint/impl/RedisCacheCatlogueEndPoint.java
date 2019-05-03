@@ -1,5 +1,7 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
+import java.util.Map;
+
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,6 +9,9 @@ import org.springframework.stereotype.Component;
 import com.morrisons.wholesale.dsd.config.RedisConfig;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
+import com.morrisons.wholesale.dsd.util.RedisUtil;
+import com.morrisons.wholesale.dsd.util.ServiceUtil;
+import com.morrisons.wholesale.dsd.util.Util;
 
 @Component("redisCacheEndPoint")
 public class RedisCacheCatlogueEndPoint implements IRedisCacheEndPoint<String, RedisCatlogueItem> {
@@ -25,16 +30,9 @@ public class RedisCacheCatlogueEndPoint implements IRedisCacheEndPoint<String, R
 	@Override
 	public RedisCatlogueItem get(String key) {
 
-		return getRedisCatalogueItems(key);
-	}
+		Map<String, Map<String, String>> map = RedisUtil.getCatalogueItemMap(redissonClient,
+				ServiceUtil.getKeyForCatalogueItem(redisConfig.getEvn(), key));
 
-	private RedisCatlogueItem getRedisCatalogueItems(String key) {
-
-		/*
-		 * return RedisUtil.getCatalogueItemMap(redissonClient,
-		 * ServiceUtil.getKeyForCatalogueItem(redisConfig.getEvn(), key));
-		 */
-		// for now
-		return new RedisCatlogueItem();
+		return Util.convertMapToDTO(map);
 	}
 }

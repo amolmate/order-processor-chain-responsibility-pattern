@@ -1,9 +1,12 @@
 package com.morrisons.wholesale.dsd.validation;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
+import java.util.Map;
+
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
+import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.impl.WholesaleStoreServiceCaller;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCaseSizeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCategoryValidator;
@@ -19,8 +22,9 @@ public class ValidationNodeBuilder {
 
 	}
 
-	public static INode<Item> build(Customers customers,
-			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
+	public static INode<Item> build(Map<String, Map<String, SupportedSupplier>> customers,
+			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint,
+			WholesaleStoreServiceCaller wholesaleStoreServiceCaller) {
 
 		if (validationNode != null) {
 
@@ -28,12 +32,12 @@ public class ValidationNodeBuilder {
 		} else {
 
 			validationNode = new ItemBaseTypeValidatonNode(new ItemBaseTypeValidator(customers),
-					new ItemUomValidatonNode(new ItemUomValidator(customers),
-							new ItemCaseSizeValidatonNode(new ItemCaseSizeValidator(customers, redisCacheEndPoint),
-									new ItemCategoryValidatonNode(new ItemCategoryValidator(customers),
-											new ItemIdValidatonNode(new ItemIdValidator(customers, redisCacheEndPoint),
-													new ItemShipToLocationIdValidatonNode(
-															new ItemShipToLocationIdValidator(customers), null))))));
+					new ItemUomValidatonNode(new ItemUomValidator(customers), new ItemCaseSizeValidatonNode(
+							new ItemCaseSizeValidator(redisCacheEndPoint),
+							new ItemCategoryValidatonNode(new ItemCategoryValidator(customers), new ItemIdValidatonNode(
+									new ItemIdValidator(redisCacheEndPoint), new ItemShipToLocationIdValidatonNode(
+											new ItemShipToLocationIdValidator(customers, wholesaleStoreServiceCaller),
+											null))))));
 			return validationNode;
 		}
 	}

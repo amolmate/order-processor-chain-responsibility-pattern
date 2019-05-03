@@ -1,14 +1,15 @@
 package com.morrisons.wholesale.dsd.validator;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 
 public class ItemBaseTypeValidator extends BaseValidator<Item> {
 
-	public ItemBaseTypeValidator(Customers customers) {
+	public ItemBaseTypeValidator(Map<String, Map<String, SupportedSupplier>> customers) {
 
 		super(customers);
 	}
@@ -17,7 +18,7 @@ public class ItemBaseTypeValidator extends BaseValidator<Item> {
 	public boolean validate(Item data) {
 
 		String itemBaseTypeFromConfig = getItemBaseTypeFromConfig(
-				getSupplierWithName(getCustomerWithName(data.getCustomerName()), data.getSupplierName()));
+				getSupplier(data.getCustomerName(), data.getSupplierName()));
 
 		if (itemBaseTypeFromConfig == null) {
 

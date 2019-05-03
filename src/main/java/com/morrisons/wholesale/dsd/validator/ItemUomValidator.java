@@ -1,14 +1,15 @@
 package com.morrisons.wholesale.dsd.validator;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 
 public class ItemUomValidator extends BaseValidator<Item> {
 
-	public ItemUomValidator(Customers customers) {
+	public ItemUomValidator(Map<String, Map<String, SupportedSupplier>> customers) {
 
 		super(customers);
 	}
@@ -16,8 +17,7 @@ public class ItemUomValidator extends BaseValidator<Item> {
 	@Override
 	public boolean validate(Item data) {
 
-		String itemUom = getItemUOMFromConfig(
-				getSupplierWithName(getCustomerWithName(data.getCustomerName()), data.getSupplierName()));
+		String itemUom = getItemUOMFromConfig(getSupplier(data.getCustomerName(), data.getSupplierName()));
 
 		if (itemUom == null) {
 

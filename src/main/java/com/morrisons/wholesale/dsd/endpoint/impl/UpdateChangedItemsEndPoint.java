@@ -56,7 +56,7 @@ public class UpdateChangedItemsEndPoint extends BaseEndPoint<UpdateItemPayload, 
 	@Override
 	public String put(ParameterMappings parameterMappings, UpdateItemPayload input) {
 
-		return send(parameterMappings, input);
+		return getOutputEntity(send(parameterMappings, input));
 	}
 
 	@Override

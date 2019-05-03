@@ -1,13 +1,10 @@
 package com.morrisons.wholesale.dsd.thread;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
@@ -15,25 +12,21 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.WMMException;
 
-public class FetchDSDOrdersThread implements Callable<Orders> {
+public class DSDOrdersEndPointCaller {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FetchDSDOrdersThread.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DSDOrdersEndPointCaller.class);
 
 	private ParameterMappings parameterMappings;
 
 	private IBaseGetEndPoint<Orders> getDSDOrdersEndPoint;
 
-	@Autowired
-	private ExternalServiceConfig dSDOrdersConfig;
-
-	public FetchDSDOrdersThread(IBaseGetEndPoint<Orders> getDSDOrdersEndPoint, ParameterMappings parameterMappings) {
+	public DSDOrdersEndPointCaller(IBaseGetEndPoint<Orders> getDSDOrdersEndPoint, ParameterMappings parameterMappings) {
 
 		this.getDSDOrdersEndPoint = getDSDOrdersEndPoint;
 		this.parameterMappings = parameterMappings;
 	}
 
-	@Override
-	public Orders call() throws Exception {
+	public Orders call() {
 
 		try {
 

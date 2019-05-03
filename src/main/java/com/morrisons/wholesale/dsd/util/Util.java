@@ -8,6 +8,7 @@ import com.morrisons.wholesale.dsd.configservice.OrderServiceConfigDescriptor;
 import com.morrisons.wholesale.dsd.dto.Configuration;
 import com.morrisons.wholesale.dsd.dto.Customer;
 import com.morrisons.wholesale.dsd.dto.Customers;
+import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 
 import lombok.experimental.UtilityClass;
@@ -74,5 +75,13 @@ public final class Util {
 		}
 
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static RedisCatlogueItem convertMapToDTO(Map<String, Map<String, String>> map) {
+
+		// convert
+
+		return new RedisCatlogueItem();
 	}
 }

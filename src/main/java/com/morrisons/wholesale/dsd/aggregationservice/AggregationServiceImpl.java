@@ -29,7 +29,7 @@ public class AggregationServiceImpl implements AggregationService {
 
 	private IBaseGetEndPoint<PollingResponse> pollingEndPoint;
 
-	private static final long INTERVAL = 120000;
+	private static final long INTERVAL = 120;
 
 	@Autowired
 	public AggregationServiceImpl(IBasePostEndPoint<AggregationPayload, String> aggregationEndPoint,

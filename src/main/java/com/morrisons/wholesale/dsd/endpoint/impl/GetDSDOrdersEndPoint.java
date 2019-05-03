@@ -50,7 +50,7 @@ public class GetDSDOrdersEndPoint extends BaseEndPoint<HttpHeaders, Orders> impl
 	@Override
 	public Orders get(ParameterMappings parameterMappings) {
 
-		return send(parameterMappings, null);
+		return getOutputEntity(send(parameterMappings, null));
 	}
 
 	@Override

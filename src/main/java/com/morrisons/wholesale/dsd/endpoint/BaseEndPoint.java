@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -46,12 +47,21 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 	 * Main method
 	 */
 	@Override
-	public final O send(ParameterMappings parameterMappings, I input) {
+	public final ResponseEntity<O> send(ParameterMappings parameterMappings, I input) {
 
-		ResponseEntity<O> response = restTemplate.exchange(buildURIWithParams(parameterMappings), getHttpMethod(),
-				getHttpEntity(input, parameterMappings), getOutputEntityClass());
+		try {
 
-		return getOutputEntity(response);
+			String uri = buildURIWithParams(parameterMappings);
+
+			LOGGER.info(StringUtils.join("Request URI -> ", uri));
+
+			return restTemplate.exchange(uri, getHttpMethod(), getHttpEntity(input, parameterMappings),
+					getOutputEntityClass());
+		} catch (Exception exception) {
+
+			LOGGER.error(StringUtils.join("Exception in sending request ", exception.getMessage()));
+			throw exception;
+		}
 	}
 
 	private HttpEntity<Object> getHttpEntity(I input, ParameterMappings parameterMappings) {
@@ -90,7 +100,7 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 			uriParams.put(eachPathParam.getName(), eachPathParam.getValue().toString());
 		}
 
-		List<ParameterMapping> querryParam = parameterMappings.getPathParameters();
+		List<ParameterMapping> querryParam = parameterMappings.getQueryParameters();
 
 		// Query parameters
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(externalServiceConfig.getUri());
@@ -98,12 +108,14 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 		querryParam.forEach(q -> builder.queryParam(q.getName(), q.getValue()));
 
 		return builder.buildAndExpand(uriParams).toUri().toString();
-
 	}
 
 	protected abstract HttpMethod getHttpMethod();
 
-	protected abstract O getOutputEntity(ResponseEntity<O> response);
+	protected O getOutputEntity(ResponseEntity<O> response) {
+
+		return response.getBody();
+	}
 
 	/**
 	 * Applicable statuses to checked against

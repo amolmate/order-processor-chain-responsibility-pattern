@@ -1,58 +1,44 @@
 package com.morrisons.wholesale.dsd.validator;
 
 import java.util.Map;
-import java.util.Optional;
 
-import com.morrisons.wholesale.dsd.dto.Customer;
-import com.morrisons.wholesale.dsd.dto.Customers;
+import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
+import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 
 public abstract class BaseValidator<T> {
 
-	protected Customers customers;
+	protected Map<String, Map<String, SupportedSupplier>> customers;
 
-	public BaseValidator(Customers customers) {
+	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
+
+	public BaseValidator(Map<String, Map<String, SupportedSupplier>> customers) {
 
 		this.customers = customers;
 	}
 
-	protected Customer getCustomerWithName(String name) {
+	public BaseValidator(IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
-		Optional<Customer> customer = customers.getCustomers().stream().filter(c -> c.getName().equals(name))
-				.findFirst();
-
-		if (customer.isPresent()) {
-
-			return customer.get();
-		} else {
-			return null;
-		}
+		this.redisCacheEndPoint = redisCacheEndPoint;
 	}
 
-	protected SupportedSupplier getSupplierWithName(Customer customer, String name) {
+	protected SupportedSupplier getSupplier(String customerName, String supplierName) {
 
-		if (customer == null) {
+		Map<String, SupportedSupplier> supplierMap = customers.get(customerName);
+
+		if (supplierMap == null) {
 
 			return null;
 		} else {
 
-			Optional<SupportedSupplier> supportedSupplier = customer.getSupportedSuppliers().stream()
-					.filter(c -> c.getName().equals(name)).findFirst();
-
-			if (supportedSupplier.isPresent()) {
-
-				return supportedSupplier.get();
-			} else {
-
-				return null;
-			}
+			return supplierMap.get(supplierName);
 		}
 	}
 
-	protected Map<String, Object> getItemFromRedisCatlogue(T data) {
+	protected Map<String, Object> getItemFromRedisCatlogue(String key) {
 
 		// redis code to fetch item from redis
-
+		redisCacheEndPoint.get(key);
 		return null;
 	}
 

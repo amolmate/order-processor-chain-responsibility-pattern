@@ -56,7 +56,7 @@ public class AggregationEndPoint extends BaseEndPoint<AggregationPayload, String
 	@Override
 	public String post(ParameterMappings parameterMappings, AggregationPayload input) {
 
-		return send(parameterMappings, input);
+		return getOutputEntity(send(parameterMappings, input));
 	}
 
 	@Override

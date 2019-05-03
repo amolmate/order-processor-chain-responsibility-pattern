@@ -45,6 +45,8 @@ public class ApplicationConfig {
 	private ExternalServiceConfig updateItemConfig;
 	
 	private ExternalServiceConfig pollingConfig;
+	
+	private ExternalServiceConfig storeServiceConfig;
 
 	private RedisConfig redis;
 
@@ -65,13 +67,18 @@ public class ApplicationConfig {
 
 		return pollingConfig;
 	}
+	
+	@Bean("storeServiceConfig")
+	public ExternalServiceConfig getStoreServiceConfig() {
 
+		return storeServiceConfig;
+	}
+	
 	@Bean("redisConfig")
 	public RedisConfig getRedisConfig() {
 
 		return redis;
 	}
-
 	
 	@Bean
 	public Client getJersyClient() {

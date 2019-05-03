@@ -23,6 +23,7 @@ import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.impl.WholesaleStoreServiceCaller;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
@@ -37,19 +38,23 @@ public class ValidationClient {
 
 	private Map<String, Map<String, SupportedSupplier>> customerMap;
 
+	private WholesaleStoreServiceCaller wholesaleStoreServiceCaller;
+
 	@Autowired
 	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, String> updateChangedItemsEndPoint,
-			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
+			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint,
+			WholesaleStoreServiceCaller wholesaleStoreServiceCaller) {
 
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
 		this.redisCacheEndPoint = redisCacheEndPoint;
+		this.wholesaleStoreServiceCaller = wholesaleStoreServiceCaller;
 	}
 
 	public void initialize(List<Orders> orders, Customers customers) {
 
 		createCustomerMap(customers);
 
-		node = ValidationNodeBuilder.build(customers, redisCacheEndPoint);
+		node = ValidationNodeBuilder.build(customerMap, redisCacheEndPoint, wholesaleStoreServiceCaller);
 
 		orders.forEach(s -> s.getOrders().forEach(this::processOrder));
 	}

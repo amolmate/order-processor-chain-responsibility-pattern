@@ -47,6 +47,10 @@ pers:
     uri: https://api.morrisons.com/wholesale/v2/customers/{customerId}/directorders/jobs/{jobId}
     apiKey: l6dNLwHbqpnhvUVPqhaLNCjA0qKdFo36
     authorization: Basic bDZkTkx3SGJxcG5odlVWUHFoYUxOQ2pBMHFLZEZvMzY6MERtY1NsZVRHWkJ6QURGbg==
+  storeServiceConfig:
+    uri: https://api.morrisons.com/wholesale/v1/customers/{customerId}/stores/{storeId}/latest
+    apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
+    authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==
   customer:
     indexkey: customerMessageType
     indexvalue: wholesale-dsd-order-processor

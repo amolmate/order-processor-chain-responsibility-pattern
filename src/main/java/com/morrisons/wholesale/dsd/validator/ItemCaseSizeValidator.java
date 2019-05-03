@@ -1,6 +1,5 @@
 package com.morrisons.wholesale.dsd.validator;
 
-import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
@@ -9,10 +8,9 @@ public class ItemCaseSizeValidator extends BaseValidator<Item> {
 
 	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
 
-	public ItemCaseSizeValidator(Customers customers,
-			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
+	public ItemCaseSizeValidator(IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
 
-		super(customers);
+		super(redisCacheEndPoint);
 		this.redisCacheEndPoint = redisCacheEndPoint;
 	}
 

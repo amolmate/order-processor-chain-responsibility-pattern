@@ -54,6 +54,9 @@ public class Item {
 
 	@JsonProperty("uom")
 	private String uom;
+	
+	@JsonProperty("shipToLocationId")
+	private String shipToLocationId;
 
 	private String customerName;
 

@@ -12,7 +12,6 @@ import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.impl.GetOrdersEndpointGenerator;
 import com.morrisons.wholesale.dsd.processor.WholesaleDSDOrderProcessorTemplate;
-import com.morrisons.wholesale.dsd.threadexecutor.IThreadExecutor;
 import com.morrisons.wholesale.dsd.util.Util;
 import com.morrisons.wholesale.dsd.validation.NodeResult;
 import com.morrisons.wholesale.dsd.validation.ValidationClient;
@@ -26,8 +25,6 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 
 	private GetOrdersEndpointGenerator getOrdersEndpointGenerator;
 
-	private IThreadExecutor<Orders> threadExecutor;
-
 	private ConfigService configService;
 
 	private ValidationClient validationClient;
@@ -35,12 +32,10 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	private AggregationService aggregationService;
 
 	@Autowired
-	public WholesaleDSDOrderProcessorTemplateImpl(GetOrdersEndpointGenerator generator,
-			IThreadExecutor<Orders> threadExecutor, ConfigService configService, ValidationClient client,
-			AggregationService aggregationService) {
+	public WholesaleDSDOrderProcessorTemplateImpl(GetOrdersEndpointGenerator generator, ConfigService configService,
+			ValidationClient client, AggregationService aggregationService) {
 
 		this.getOrdersEndpointGenerator = generator;
-		this.threadExecutor = threadExecutor;
 		this.configService = configService;
 		this.validationClient = client;
 		this.aggregationService = aggregationService;
@@ -61,7 +56,8 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 			log.error("Could not read data from config service");
 			return Collections.emptyList();
 		}
-		return threadExecutor.execute(getOrdersEndpointGenerator.generateEndPointFromCustomerList(customers));
+
+		return getOrdersEndpointGenerator.generateEndPointFromCustomerList(customers);
 	}
 
 	@Override
