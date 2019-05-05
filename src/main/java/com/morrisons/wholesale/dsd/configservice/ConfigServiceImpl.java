@@ -32,12 +32,14 @@ public class ConfigServiceImpl implements ConfigService {
 
 			Item item = eventDAO.getItem(configuration.getDynamoDbConfiguration().getDynamoWholesaleConfigTable(),
 					configuration.getCustomer().getIndexkey(), configuration.getCustomer().getIndexvalue());
-			
+
 			orderServiceConfigDescriptor = new ObjectMapper().readValue(item.toJSON(),
 					OrderServiceConfigDescriptor.class);
 		} catch (Exception e) {
 
-			LOGGER.error(String.format("No Configuration Found for combination %s ", configuration.getCustomer().getIndexvalue()), e);
+			LOGGER.error(String.format("No Configuration Found for combination %s ",
+					configuration.getCustomer().getIndexvalue()), e);
+			throw new RuntimeException();
 		}
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType END");
