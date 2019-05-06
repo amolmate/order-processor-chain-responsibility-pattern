@@ -116,11 +116,11 @@ public class AggregationServiceImpl implements AggregationService {
 
 			String status = response.getStatus();
 
-			if (StringUtils.isNotBlank(status) && status.equalsIgnoreCase("COMPLETE")) {
+			if (StringUtils.isNotBlank(status) && "COMPLETE".equalsIgnoreCase(status)) {
 
 				// stop all tasks
 				cancelAllTasks();
-			} else if (StringUtils.isNotBlank(status) && !status.equalsIgnoreCase("COMPLETE") && isTimedOut()) {
+			} else if (StringUtils.isNotBlank(status) && !"COMPLETE".equalsIgnoreCase(status) && isTimedOut()) {
 				// print logs accordingly
 			}
 		}

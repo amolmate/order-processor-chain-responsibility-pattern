@@ -15,7 +15,7 @@ import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 import com.morrisons.wholesale.dsd.exception.WMMException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CancelStockMovementEndPointTest {
+public class AggregationServiceTest {
 
 	// @InjectMocks
 	// private CancelStockMovementEndPoint cancelStockMovementEndPoint;

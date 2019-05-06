@@ -10,6 +10,7 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
  *            Output Structure
  */
 
+@FunctionalInterface
 public interface IBaseGetEndPoint<O> {
 
 	O get(ParameterMappings parameterMappings);

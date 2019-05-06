@@ -13,6 +13,8 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
  * @param <O>
  *            Output Structure
  */
+
+@FunctionalInterface
 public interface IBaseEndPoint<I, O> {
 
 	ResponseEntity<O> send(ParameterMappings parameterMappings, I input);

@@ -14,7 +14,7 @@ import com.morrisons.wholesale.dsd.util.ServiceUtil;
 import com.morrisons.wholesale.dsd.util.Util;
 
 @Component("redisCacheEndPoint")
-public class RedisCacheCatlogueEndPoint implements IRedisCacheEndPoint<String, RedisCatlogueItem> {
+public class RedisCacheCatlogueEndPoint  implements IRedisCacheEndPoint<String, RedisCatlogueItem> {
 
 	private RedissonClient redissonClient;
 

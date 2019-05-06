@@ -11,6 +11,8 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
  * @param <O>
  *            Output Structure
  */
+
+@FunctionalInterface
 public interface IBasePostEndPoint<I, O> {
 
 	O post(ParameterMappings parameterMappings, I input);
