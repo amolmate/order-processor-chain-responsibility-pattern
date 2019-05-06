@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.mockito.internal.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -163,7 +163,7 @@ public class ValidationClient {
 
 	private String verfiyAndGenerateCorrelationId() {
 
-		return StringUtil.join(UUID.randomUUID().toString(), System.currentTimeMillis());
+		return StringUtils.join(UUID.randomUUID().toString(), System.currentTimeMillis());
 	}
 
 	private RedisCatlogueItem getItemFromRedisCacheCatlogue(String key) {
