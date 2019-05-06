@@ -21,8 +21,8 @@ import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
 import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
-import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.impl.WholesaleStoreServiceCaller;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
@@ -34,7 +34,7 @@ public class ValidationClient {
 
 	private IBasePutEndPoint<UpdateItemPayload, String> updateChangedItemsEndPoint;
 
-	private IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint;
+	private IBaseGetEndPoint<RedisCatlogueItem> redisCacheEndPoint;
 
 	private Map<String, Map<String, SupportedSupplier>> customerMap;
 
@@ -42,7 +42,7 @@ public class ValidationClient {
 
 	@Autowired
 	public ValidationClient(IBasePutEndPoint<UpdateItemPayload, String> updateChangedItemsEndPoint,
-			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint,
+			IBaseGetEndPoint<RedisCatlogueItem> redisCacheEndPoint,
 			WholesaleStoreServiceCaller wholesaleStoreServiceCaller) {
 
 		this.updateChangedItemsEndPoint = updateChangedItemsEndPoint;
@@ -99,8 +99,14 @@ public class ValidationClient {
 
 	private void getValueFromRedisAndEnrich(Item item, String identifier) {
 
-		RedisCatlogueItem redisItem = getItemFromRedisCacheCatlogue(identifier);
+		RedisCatlogueItem redisItem = getItemFromRedisCacheCatlogue(getParameterMappingsForRedis(item));
 		item.setSkuMin(redisItem.getMin());
+	}
+
+	private ParameterMappings getParameterMappingsForRedis(Item item) {
+		
+		
+		return null;
 	}
 
 	private void processOrder(Order order) {
@@ -166,8 +172,8 @@ public class ValidationClient {
 		return StringUtils.join(UUID.randomUUID().toString(), System.currentTimeMillis());
 	}
 
-	private RedisCatlogueItem getItemFromRedisCacheCatlogue(String key) {
+	private RedisCatlogueItem getItemFromRedisCacheCatlogue(ParameterMappings mappings) {
 
-		return redisCacheEndPoint.get(key);
+		return redisCacheEndPoint.get(mappings);
 	}
 }

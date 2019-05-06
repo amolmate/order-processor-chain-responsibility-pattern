@@ -3,10 +3,12 @@ package com.morrisons.wholesale.dsd.config;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Configuration
-public class RedisConfig {
+public class RedisConfig extends ExternalServiceConfig {
 	
 	private String uri;
 

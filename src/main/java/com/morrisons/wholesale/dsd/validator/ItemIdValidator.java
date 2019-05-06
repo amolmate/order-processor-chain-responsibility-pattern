@@ -1,16 +1,15 @@
 package com.morrisons.wholesale.dsd.validator;
 
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
-import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
 public class ItemIdValidator extends BaseValidator<Item> {
 
-	public ItemIdValidator(IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint) {
+	public ItemIdValidator(IBaseGetEndPoint<RedisCatlogueItem> redisCacheEndPoint) {
 
 		super(redisCacheEndPoint);
 	}
@@ -18,9 +17,8 @@ public class ItemIdValidator extends BaseValidator<Item> {
 	@Override
 	public boolean validate(Item data) {
 
-		String key = getRedisCacheKey(data);
-
-		String itemIdFromRedisCatalogue = getItemIdFromRedisCatalogue(getItemFromRedisCatlogue(key));
+		String itemIdFromRedisCatalogue = getItemIdFromRedisCatalogue(
+				getItemFromRedisCatlogue(getParameterMappings(data)));
 
 		if (itemIdFromRedisCatalogue == null) {
 
@@ -37,14 +35,14 @@ public class ItemIdValidator extends BaseValidator<Item> {
 		}
 	}
 
-	private String getRedisCacheKey(Item data) {
+	private ParameterMappings getParameterMappings(Item data) {
 
 		return null;
 	}
 
-	private String getItemIdFromRedisCatalogue(Map<String, Object> map) {
+	private String getItemIdFromRedisCatalogue(RedisCatlogueItem redisCatlogueItem) {
 
-		// get itemId from map
-		return null;
+		// get itemId from CatlogueItem
+		return redisCatlogueItem.getMin();
 	}
 }

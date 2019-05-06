@@ -57,8 +57,8 @@ pers:
   dynamoDbConfiguration:
     dynamoWholesaleConfigTable: dev.xxwmm.wholesale.core.config
     batchLimit: 25
-  redis:
-    uri: https://wholesalecatalogueservice.dev.np.morconnect.com/wholesale-catalogue/wholesaleorder/v1/customers/mccolls/catalogues/CNV/items/201920191/@cache
+  redisConfig:
+    uri: https://wholesalecatalogueservice.dev.np.morconnect.com/wholesale-catalogue/wholesaleorder/v1/customers/{customerId}/catalogues/{messageType}/items/{itemId}/@cache
     apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
     authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==
     endpoint: redis://127.0.0.1:6379

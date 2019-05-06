@@ -47,8 +47,8 @@ public class ApplicationConfig {
 	private ExternalServiceConfig pollingConfig;
 	
 	private ExternalServiceConfig storeServiceConfig;
-
-	private RedisConfig redis;
+	
+	private RedisConfig redisConfig;
 
 	@Bean("updateItemConfig")
 	public ExternalServiceConfig getUpdateItemConfig() {
@@ -77,7 +77,7 @@ public class ApplicationConfig {
 	@Bean("redisConfig")
 	public RedisConfig getRedisConfig() {
 
-		return redis;
+		return redisConfig;
 	}
 	
 	@Bean
@@ -96,18 +96,18 @@ public class ApplicationConfig {
 	public RestTemplate getRestTemplate(RestTemplateBuilder builder) {
 		
 		return builder.build();
-	} 
+	}
 
 	@Bean("redissonClient")
 	public RedissonClient redissonClient() {
 
 		Config config = new Config();
 		SingleServerConfig singleServerConfig = config.useSingleServer();
-		singleServerConfig.setAddress(redis.getEndpoint());
-		singleServerConfig.setConnectionMinimumIdleSize(redis.getConnectionMinimumIdleSize());
-		singleServerConfig.setConnectionPoolSize(redis.getConnectionPoolSize());
-		singleServerConfig.setIdleConnectionTimeout(redis.getIdleConnectionTimeout());
-		singleServerConfig.setConnectTimeout(redis.getConnectTimeout());
+		singleServerConfig.setAddress(redisConfig.getEndpoint());
+		singleServerConfig.setConnectionMinimumIdleSize(redisConfig.getConnectionMinimumIdleSize());
+		singleServerConfig.setConnectionPoolSize(redisConfig.getConnectionPoolSize());
+		singleServerConfig.setIdleConnectionTimeout(redisConfig.getIdleConnectionTimeout());
+		singleServerConfig.setConnectTimeout(redisConfig.getConnectTimeout());
 		return Redisson.create(config);
 	}
 }

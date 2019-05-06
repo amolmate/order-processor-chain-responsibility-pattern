@@ -5,7 +5,7 @@ import java.util.Map;
 import com.morrisons.wholesale.dsd.dto.Item;
 import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.dto.SupportedSupplier;
-import com.morrisons.wholesale.dsd.endpoint.IRedisCacheEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.impl.WholesaleStoreServiceCaller;
 import com.morrisons.wholesale.dsd.validator.ItemBaseTypeValidator;
 import com.morrisons.wholesale.dsd.validator.ItemCaseSizeValidator;
@@ -23,7 +23,7 @@ public class ValidationNodeBuilder {
 	}
 
 	public static INode<Item> build(Map<String, Map<String, SupportedSupplier>> customers,
-			IRedisCacheEndPoint<String, RedisCatlogueItem> redisCacheEndPoint,
+			IBaseGetEndPoint<RedisCatlogueItem> redisCacheEndPoint,
 			WholesaleStoreServiceCaller wholesaleStoreServiceCaller) {
 
 		if (validationNode != null) {
@@ -35,7 +35,8 @@ public class ValidationNodeBuilder {
 					new ItemUomValidatonNode(new ItemUomValidator(customers), new ItemCaseSizeValidatonNode(
 							new ItemCaseSizeValidator(redisCacheEndPoint),
 							new ItemCategoryValidatonNode(new ItemCategoryValidator(customers), new ItemIdValidatonNode(
-									new ItemIdValidator(redisCacheEndPoint), new ItemShipToLocationIdValidatonNode(
+									new ItemIdValidator(redisCacheEndPoint),
+									new ItemShipToLocationIdValidatonNode(
 											new ItemShipToLocationIdValidator(customers, wholesaleStoreServiceCaller),
 											null))))));
 			return validationNode;
