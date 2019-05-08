@@ -25,9 +25,9 @@ public class ItemCategoryValidator extends BaseValidator<Item> {
 			return false;
 		} else {
 
-			if (StringUtils.isNotBlank("itemCategory")) {
+			if (StringUtils.isNotBlank(itemCategoryFromConfig) && StringUtils.isNotBlank(data.getItemCategory())) {
 
-				return "itemCategory".equals(itemCategoryFromConfig);
+				return itemCategoryFromConfig.equals(data.getItemCategory());
 			} else {
 
 				return false;
@@ -41,7 +41,7 @@ public class ItemCategoryValidator extends BaseValidator<Item> {
 
 			return null;
 		}
-		// change
-		return supportedSupplier.getName();
+		
+		return supportedSupplier.getItemCategory();
 	}
 }

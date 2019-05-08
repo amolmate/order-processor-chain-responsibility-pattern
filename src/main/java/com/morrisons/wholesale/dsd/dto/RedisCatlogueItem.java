@@ -71,4 +71,7 @@ public class RedisCatlogueItem {
 	
 	@JsonProperty("availabilityStatus")
 	private String availabilityStatus;
+	
+	@JsonProperty("itemCaseSize")
+	private float itemCaseSize;
 }

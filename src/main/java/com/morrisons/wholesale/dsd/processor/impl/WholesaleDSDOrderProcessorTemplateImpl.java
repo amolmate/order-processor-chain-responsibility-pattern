@@ -12,8 +12,6 @@ import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.impl.GetOrdersEndpointGenerator;
 import com.morrisons.wholesale.dsd.processor.WholesaleDSDOrderProcessorTemplate;
-import com.morrisons.wholesale.dsd.util.Util;
-import com.morrisons.wholesale.dsd.validation.NodeResult;
 import com.morrisons.wholesale.dsd.validation.ValidationClient;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service("wholesaleDSDOrderProcessor")
 public class WholesaleDSDOrderProcessorTemplateImpl
-		extends WholesaleDSDOrderProcessorTemplate<Customers, List<Orders>, NodeResult> {
+		extends WholesaleDSDOrderProcessorTemplate<Customers, List<Orders>> {
 
 	private GetOrdersEndpointGenerator getOrdersEndpointGenerator;
 
@@ -44,7 +42,6 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	@Override
 	protected Customers getDataFromConifgService() {
 
-		//return Util.convertMapToDTO(configService.getCustomersConfigFromDynamo());
 		return configService.getCustomersConfigFromService();
 	}
 
@@ -62,10 +59,9 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	}
 
 	@Override
-	protected NodeResult validateDSDOrders(List<Orders> ordersList, Customers customers) {
+	protected void validateDSDOrders(List<Orders> ordersList, Customers customers) {
 
 		validationClient.initialize(ordersList, customers);
-		return null;
 	}
 
 	@Override

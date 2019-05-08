@@ -57,6 +57,9 @@ public class Item {
 	
 	@JsonProperty("shipToLocationId")
 	private String shipToLocationId;
+	
+	@JsonProperty("itemCategory")
+	private String itemCategory;
 
 	private String customerName;
 

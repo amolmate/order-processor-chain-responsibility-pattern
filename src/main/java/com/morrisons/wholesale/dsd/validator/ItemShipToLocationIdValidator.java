@@ -24,13 +24,6 @@ public class ItemShipToLocationIdValidator extends BaseValidator<Item> {
 
 		String saleId = wholesaleStoreServiceCaller.call(data);
 
-		if (StringUtils.isNotBlank(saleId)) {
-
-			// saleId exctrated do further action
-			return true;
-		} else {
-
-			return false;
-		}
+		return StringUtils.isNotBlank(saleId);
 	}
 }

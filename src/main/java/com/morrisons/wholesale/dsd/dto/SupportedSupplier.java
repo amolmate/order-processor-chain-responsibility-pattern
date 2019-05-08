@@ -33,4 +33,7 @@ public class SupportedSupplier {
 	
 	@JsonProperty("uom")
 	private String uom;
+	
+	@JsonProperty("itemCategory")
+	private String itemCategory;
 }

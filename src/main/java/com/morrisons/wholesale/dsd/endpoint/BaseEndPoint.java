@@ -107,15 +107,20 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 
 		List<ParameterMapping> pathParam = parameterMappings.getPathParameters();
 
-		for (ParameterMapping eachPathParam : pathParam) {
+		if (CollectionUtils.isNotEmpty(pathParam)) {
 
-			uriParams.put(eachPathParam.getName(), eachPathParam.getValue().toString());
+			for (ParameterMapping eachPathParam : pathParam) {
+
+				uriParams.put(eachPathParam.getName(), eachPathParam.getValue().toString());
+			}
 		}
 
 		List<ParameterMapping> querryParam = parameterMappings.getQueryParameters();
 
-		// Query parameters
-		querryParam.forEach(q -> builder.queryParam(q.getName(), q.getValue()));
+		if (CollectionUtils.isNotEmpty(querryParam)) {
+			// Query parameters
+			querryParam.forEach(q -> builder.queryParam(q.getName(), q.getValue()));
+		}
 
 		return builder.buildAndExpand(uriParams).toUri().toString();
 	}

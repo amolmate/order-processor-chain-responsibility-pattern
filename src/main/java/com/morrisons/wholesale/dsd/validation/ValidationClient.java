@@ -113,8 +113,12 @@ public class ValidationClient {
 
 	private ParameterMappings getParameterMappingsForRedis(Item item) {
 		
-		
-		return null;
+		ParameterMappings mappings = new ParameterMappings();
+		List<ParameterMapping> pathParams = new ArrayList<>();
+		pathParams.add(new ParameterMapping("customerId", item.getCustomerId()));
+		pathParams.add(new ParameterMapping("itemId", item.getItemId()));
+		mappings.setPathParameters(pathParams);
+		return mappings;
 	}
 
 	private void processOrder(Order order) {

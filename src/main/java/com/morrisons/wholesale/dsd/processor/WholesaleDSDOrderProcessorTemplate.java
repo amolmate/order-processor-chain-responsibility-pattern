@@ -1,6 +1,6 @@
 package com.morrisons.wholesale.dsd.processor;
 
-public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWholesaleDSDOrderProcessor {
+public abstract class WholesaleDSDOrderProcessorTemplate<D, O> implements IWholesaleDSDOrderProcessor {
 
 	@Override
 	public void processTask() {
@@ -22,7 +22,7 @@ public abstract class WholesaleDSDOrderProcessorTemplate<D, O, R> implements IWh
 	
 	protected abstract O getDSDOrdersWithStatusRaised(D data);
 	
-	protected abstract R validateDSDOrders(O orders, D data);
+	protected abstract void validateDSDOrders(O orders, D data);
 	
 	protected abstract void aggregateOrders(D data);
 }
