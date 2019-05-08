@@ -42,12 +42,6 @@ public class WholesaleStoreServiceEndPoint extends BaseEndPoint<HttpHeaders, Cat
 	}
 
 	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
-
-		return null;
-	}
-
-	@Override
 	protected Class<Categories> getOutputEntityClass() {
 
 		return Categories.class;

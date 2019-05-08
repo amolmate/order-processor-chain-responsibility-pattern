@@ -7,9 +7,8 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.morrisons.wholesale.dsd.config.ApplicationConfig;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 import com.morrisons.wholesale.dsd.exception.ExceptionConfigLoader;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
-import com.morrisons.wholesale.dsd.exception.WMMException;
 import com.morrisons.wholesale.dsd.processor.IWholesaleDSDOrderProcessor;
 
 /**
@@ -24,10 +23,7 @@ public class ApplicationTest {
 	private IWholesaleDSDOrderProcessor applicationService;
 
 	@Mock
-	private WMMException wMMException;
-
-	@Mock
-	private IWMMExceptionFactory exceptionFactory;
+	private ConfigServiceException wMMException;
 
 	@Mock
 	private ExceptionConfigLoader exceptionConfigLoader;
@@ -70,7 +66,7 @@ public class ApplicationTest {
 		// Application.main(null);
 	}
 
-	@Test(expected = WMMException.class)
+	@Test(expected = ConfigServiceException.class)
 	public void testMainWithWMMException() {
 
 		/*

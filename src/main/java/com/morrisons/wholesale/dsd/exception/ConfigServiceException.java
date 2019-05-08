@@ -3,7 +3,7 @@ package com.morrisons.wholesale.dsd.exception;
 /**
  * The Class WMMException.
  */
-public class WMMException extends RuntimeException {
+public class ConfigServiceException extends RuntimeException {
 
 	/**
 	 * The Constant serialVersionUID.
@@ -30,7 +30,7 @@ public class WMMException extends RuntimeException {
 	 * @param message
 	 *            the message
 	 */
-	public WMMException(int errorCode, String message, int httpStatusCode) {
+	public ConfigServiceException(int errorCode, String message, int httpStatusCode) {
 		this(errorCode, message, null, httpStatusCode);
 	}
 
@@ -44,7 +44,7 @@ public class WMMException extends RuntimeException {
 	 * @param throwable
 	 *            the throwable
 	 */
-	public WMMException(int errorCode, String message, Throwable throwable, int httpStatusCode) {
+	public ConfigServiceException(int errorCode, String message, Throwable throwable, int httpStatusCode) {
 		super(message, throwable);
 		this.errorCode = errorCode;
 		this.httpStatusCode = httpStatusCode;

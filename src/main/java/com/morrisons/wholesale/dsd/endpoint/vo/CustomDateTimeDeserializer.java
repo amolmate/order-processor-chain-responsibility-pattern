@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 public class CustomDateTimeDeserializer extends JsonDeserializer<Date> {
 
@@ -24,7 +24,7 @@ public class CustomDateTimeDeserializer extends JsonDeserializer<Date> {
 				return null;
 			}
 		} catch (ParseException e) {
-			throw new WMMException(1, "Date parsing Exception", e, WMMException.DEFAULT_HTTP_STATUS_CODE);
+			throw new ConfigServiceException(1, "Date parsing Exception", e, ConfigServiceException.DEFAULT_HTTP_STATUS_CODE);
 		}
 	}
 }

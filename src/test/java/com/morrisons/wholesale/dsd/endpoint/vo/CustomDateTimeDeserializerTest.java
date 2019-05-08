@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 @RunWith(value = MockitoJUnitRunner.class)
 public class CustomDateTimeDeserializerTest {
@@ -34,8 +34,8 @@ public class CustomDateTimeDeserializerTest {
 
 	}
 
-	@Test(expected = WMMException.class)
-	public void testdeSerializeCustomDateSerializerException() throws WMMException, IOException {
+	@Test(expected = ConfigServiceException.class)
+	public void testdeSerializeCustomDateSerializerException() throws ConfigServiceException, IOException {
 
 		Mockito.when(jsonParser.getText()).thenReturn("ABC");
 		customDateTimedeSerializer.deserialize(jsonParser, deSerializationContext);

@@ -131,12 +131,4 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 	 * @return
 	 */
 	protected abstract Class<O> getOutputEntityClass();
-
-	/**
-	 * Exception to be supplied by the implementing leaf class
-	 * 
-	 * @param message
-	 * @return
-	 */
-	protected abstract RuntimeException getExceptionForErrorResponse(String message, int status);
 }

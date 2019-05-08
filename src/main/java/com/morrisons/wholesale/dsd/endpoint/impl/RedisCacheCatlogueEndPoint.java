@@ -11,14 +11,10 @@ import com.morrisons.wholesale.dsd.dto.RedisCatlogueItem;
 import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("redisCacheEndPoint")
 public class RedisCacheCatlogueEndPoint extends BaseEndPoint<HttpHeaders, RedisCatlogueItem>
 		implements IBaseGetEndPoint<RedisCatlogueItem> {
-
-	@Autowired
-	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
 	public RedisCacheCatlogueEndPoint(RestTemplate restTemplate, RedisConfig redisConfig) {
@@ -43,11 +39,6 @@ public class RedisCacheCatlogueEndPoint extends BaseEndPoint<HttpHeaders, RedisC
 
 	@Override
 	protected Class<RedisCatlogueItem> getOutputEntityClass() {
-		return null;
-	}
-
-	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
 		return null;
 	}
 }

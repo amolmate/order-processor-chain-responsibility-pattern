@@ -13,15 +13,10 @@ import com.morrisons.wholesale.dsd.dto.AggregationPayload;
 import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBasePostEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
-import com.morrisons.wholesale.dsd.exception.ErrorCodes;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("aggregationEndPoint")
 public class AggregationEndPoint extends BaseEndPoint<AggregationPayload, String>
 		implements IBasePostEndPoint<AggregationPayload, String> {
-
-	@Autowired
-	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
 	public AggregationEndPoint(RestTemplate restTemplate, ExternalServiceConfig updateItemConfig) {
@@ -33,12 +28,6 @@ public class AggregationEndPoint extends BaseEndPoint<AggregationPayload, String
 	protected Class<String> getOutputEntityClass() {
 
 		return String.class;
-	}
-
-	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
-
-		return exceptionFactory.createException(ErrorCodes.UPDATE_CHANGED_ITEMS_ERR, message, status);
 	}
 
 	@Override

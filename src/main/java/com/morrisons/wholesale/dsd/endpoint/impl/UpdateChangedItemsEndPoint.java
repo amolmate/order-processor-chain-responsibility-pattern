@@ -13,15 +13,10 @@ import com.morrisons.wholesale.dsd.dto.UpdateItemPayload;
 import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
-import com.morrisons.wholesale.dsd.exception.ErrorCodes;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("updateChangedItemsEndPoint")
 public class UpdateChangedItemsEndPoint extends BaseEndPoint<UpdateItemPayload, String>
 		implements IBasePutEndPoint<UpdateItemPayload, String> {
-
-	@Autowired
-	private IWMMExceptionFactory exceptionFactory;
 
 	@Autowired
 	public UpdateChangedItemsEndPoint(RestTemplate restTemplate, ExternalServiceConfig updateItemConfig) {
@@ -33,12 +28,6 @@ public class UpdateChangedItemsEndPoint extends BaseEndPoint<UpdateItemPayload, 
 	protected Class<String> getOutputEntityClass() {
 
 		return String.class;
-	}
-
-	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
-
-		return exceptionFactory.createException(ErrorCodes.UPDATE_CHANGED_ITEMS_ERR, message, status);
 	}
 
 	@Override

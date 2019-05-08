@@ -31,11 +31,6 @@ public class DummyBaseEndPoint extends BaseEndPoint<DummyIO, DummyIO> {
 	}
 
 	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
-		return new RuntimeException();
-	}
-
-	@Override
 	protected HttpMethod getHttpMethod() {
 		// TODO Auto-generated method stub
 		return null;

@@ -5,14 +5,11 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
-import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AggregationServiceTest {
@@ -21,10 +18,7 @@ public class AggregationServiceTest {
 	// private CancelStockMovementEndPoint cancelStockMovementEndPoint;
 
 	@Mock
-	private IWMMExceptionFactory exceptionFactory;
-
-	@Mock
-	private WMMException exception;
+	private ConfigServiceException exception;
 
 	@Mock
 	private ExternalServiceConfig externalServiceConfig;
@@ -33,8 +27,6 @@ public class AggregationServiceTest {
 
 	@Before
 	public void setUp() {
-		Mockito.when(exceptionFactory.createException(Matchers.anyInt(), Matchers.anyString(), Matchers.anyInt()))
-				.thenReturn(exception);
 	}
 
 	@Test

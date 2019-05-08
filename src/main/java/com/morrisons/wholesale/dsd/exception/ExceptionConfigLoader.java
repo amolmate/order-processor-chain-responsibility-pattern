@@ -75,8 +75,8 @@ public class ExceptionConfigLoader {
 		} catch (IOException e) {
 
 			String message = "Exception occured while reading file : " + getExceptionsFile();
-			WMMException we = new WMMException(ErrorCodes.EXCEPTIONS_FILE_LOADING_ERR, message, e,
-					WMMException.DEFAULT_HTTP_STATUS_CODE);
+			ConfigServiceException we = new ConfigServiceException(ErrorCodes.EXCEPTIONS_FILE_LOADING_ERR, message, e,
+					ConfigServiceException.DEFAULT_HTTP_STATUS_CODE);
 			LOGGER.error(message, we);
 			throw we;
 		}

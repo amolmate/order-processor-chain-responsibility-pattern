@@ -10,7 +10,7 @@ import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
-import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 public class DSDOrdersEndPointCaller {
 
@@ -59,7 +59,7 @@ public class DSDOrdersEndPointCaller {
 
 			return orders;
 
-		} catch (WMMException e) {
+		} catch (ConfigServiceException e) {
 
 			LOGGER.error("Trace : ", e);
 			LOGGER.debug("could not fetch DSD Orders. error code : {} ", e.getHttpStatusCode());

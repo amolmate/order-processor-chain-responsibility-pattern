@@ -14,25 +14,14 @@ import com.morrisons.wholesale.dsd.dto.Orders;
 import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
-import com.morrisons.wholesale.dsd.exception.ErrorCodes;
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
 
 @Component("getDSDOrdersEndPoint")
 public class GetDSDOrdersEndPoint extends BaseEndPoint<HttpHeaders, Orders> implements IBaseGetEndPoint<Orders> {
 
 	@Autowired
-	private IWMMExceptionFactory exceptionFactory;
-
-	@Autowired
 	public GetDSDOrdersEndPoint(RestTemplate restTemplate, ExternalServiceConfig dSDOrdersConfig) {
 
 		super(restTemplate, dSDOrdersConfig);
-	}
-
-	@Override
-	protected RuntimeException getExceptionForErrorResponse(String message, int status) {
-
-		return exceptionFactory.createException(ErrorCodes.GET_DSD_ORDERS_ERR, message, status);
 	}
 
 	@Override

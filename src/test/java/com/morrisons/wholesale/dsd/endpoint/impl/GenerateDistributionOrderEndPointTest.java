@@ -3,31 +3,20 @@ package com.morrisons.wholesale.dsd.endpoint.impl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.morrisons.wholesale.dsd.exception.IWMMExceptionFactory;
-import com.morrisons.wholesale.dsd.exception.WMMException;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GenerateDistributionOrderEndPointTest {
 
-	// @InjectMocks
-	// private GenerateDistributionOrderEndPoint generateDistributionOrderEndPoint;
-
 	@Mock
-	private IWMMExceptionFactory exceptionFactory;
-
-	@Mock
-	private WMMException exception;
+	private ConfigServiceException exception;
 
 	@Before
 	public void setUp() {
 
-		Mockito.when(exceptionFactory.createException(Matchers.anyInt(), Matchers.anyString(), Matchers.anyInt()))
-				.thenReturn(exception);
 	}
 
 	@Test
@@ -40,7 +29,8 @@ public class GenerateDistributionOrderEndPointTest {
 	@Test
 	public void testGetOutputEntityClass() {
 		// Assert.assertTrue("Class is null",
-		// generateDistributionOrderEndPoint.getOutputEntityClass() instanceof Class);
+		// generateDistributionOrderEndPoint.getOutputEntityClass() instanceof
+		// Class);
 	}
 
 	@Test
