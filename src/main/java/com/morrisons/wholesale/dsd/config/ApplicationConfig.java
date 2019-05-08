@@ -48,7 +48,15 @@ public class ApplicationConfig {
 	
 	private ExternalServiceConfig storeServiceConfig;
 	
+	private ExternalServiceConfig customerServiceConfig;
+	
 	private RedisConfig redisConfig;
+	
+	@Bean("customerServiceConfig")
+	public ExternalServiceConfig getCustomerServiceConfig() {
+
+		return customerServiceConfig;
+	}
 
 	@Bean("updateItemConfig")
 	public ExternalServiceConfig getUpdateItemConfig() {

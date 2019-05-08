@@ -1,7 +1,10 @@
 package com.morrisons.wholesale.dsd.configservice;
 
-@FunctionalInterface
+import com.morrisons.wholesale.dsd.dto.Customers;
+
 public interface ConfigService {
 
-	OrderServiceConfigDescriptor getCustomersFromConfigService();
+	OrderServiceConfigDescriptor getCustomersConfigFromDynamo();
+	
+	Customers getCustomersConfigFromService();
 }

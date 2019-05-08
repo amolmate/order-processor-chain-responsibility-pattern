@@ -18,7 +18,7 @@ public class WholesaleDSDOrderProcessorTask implements CommandLineRunner {
 
 	@Autowired
 	private IWholesaleDSDOrderProcessor wholesaleDSDOrderProcessor;
-	
+
 	public static void main(String[] args) {
 
 		SpringApplication springApplication = new SpringApplication(WholesaleDSDOrderProcessorTask.class);
@@ -29,7 +29,16 @@ public class WholesaleDSDOrderProcessorTask implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		log.debug("WholesaleDSDOrderProcessorTask started");
-		wholesaleDSDOrderProcessor.processTask();
-	}	
+		try {
+
+			log.debug("WholesaleDSDOrderProcessorTask started");
+			wholesaleDSDOrderProcessor.processTask();
+		} catch (Exception e) {
+
+			String message = "WholesaleDSDOrderProcessor task Failed.";
+			RuntimeException we = new RuntimeException(message, e);
+			log.error(message, we);
+			throw we;
+		}
+	}
 }

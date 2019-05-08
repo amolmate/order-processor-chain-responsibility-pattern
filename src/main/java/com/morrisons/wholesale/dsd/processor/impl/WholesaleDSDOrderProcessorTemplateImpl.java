@@ -44,7 +44,7 @@ public class WholesaleDSDOrderProcessorTemplateImpl
 	@Override
 	protected Customers getDataFromConifgService() {
 
-		return Util.convertMapToDTO(configService.getCustomersFromConfigService());
+		return Util.convertMapToDTO(configService.getCustomersConfigFromDynamo());
 	}
 
 	@Override

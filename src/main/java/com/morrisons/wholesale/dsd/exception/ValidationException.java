@@ -18,7 +18,7 @@ public class ValidationException extends RuntimeException {
 	 * The http status code.
 	 */
 	private final int httpStatusCode;
-
+	
 	/**
 	 * Instantiates a new exception.
 	 *
@@ -42,6 +42,7 @@ public class ValidationException extends RuntimeException {
 	 *            the throwable
 	 */
 	public ValidationException(int errorCode, String message, Throwable throwable, int httpStatusCode) {
+		
 		super(message, throwable);
 		this.errorCode = errorCode;
 		this.httpStatusCode = httpStatusCode;

@@ -63,8 +63,8 @@ public class DSDOrdersEndPointCaller {
 
 			LOGGER.error("Trace : ", e);
 			LOGGER.debug("could not fetch DSD Orders. error code : {} ", e.getHttpStatusCode());
+			throw e;
 		}
-		return null;
 	}
 
 	private void setCustomerAndSupplierNameToItem(Item item, String supplierName, String customerName) {

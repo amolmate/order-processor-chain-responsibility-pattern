@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
@@ -21,6 +22,7 @@ import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBasePostEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
+import com.morrisons.wholesale.dsd.exception.AggregationException;
 
 @Service
 public class AggregationServiceImpl implements AggregationService {
@@ -42,10 +44,16 @@ public class AggregationServiceImpl implements AggregationService {
 	@Override
 	public void aggregate(String customerId) {
 
-		String response = aggregationEndPoint.post(getParameterMappings(customerId), getAggregationPayload());
-		// get jobId from response
-		String jobId = response;
-		startPolling(customerId, jobId);
+		try {
+
+			String response = aggregationEndPoint.post(getParameterMappings(customerId), getAggregationPayload());
+			// get jobId from response
+			String jobId = response;
+			startPolling(customerId, jobId);
+		} catch (Exception exception) {
+
+			throw new AggregationException(101, "", exception, HttpStatus.NOT_ACCEPTABLE.value());
+		}
 	}
 
 	private void startPolling(String customerId, String jobId) {

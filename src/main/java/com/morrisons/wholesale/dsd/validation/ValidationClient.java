@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.dto.Audit;
@@ -26,6 +27,7 @@ import com.morrisons.wholesale.dsd.endpoint.IBasePutEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.impl.WholesaleStoreServiceCaller;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
+import com.morrisons.wholesale.dsd.exception.ValidationException;
 
 @Component
 public class ValidationClient {
@@ -52,11 +54,17 @@ public class ValidationClient {
 
 	public void initialize(List<Orders> orders, Customers customers) {
 
+		try {
+			
 		createCustomerMap(customers);
 
 		node = ValidationNodeBuilder.build(customerMap, redisCacheEndPoint, wholesaleStoreServiceCaller);
 
 		orders.forEach(s -> s.getOrders().forEach(this::processOrder));
+		} catch(Exception exception) {
+			
+			throw new ValidationException(101, "", exception, HttpStatus.NOT_ACCEPTABLE.value());
+		}
 	}
 
 	private void createCustomerMap(Customers customers) {

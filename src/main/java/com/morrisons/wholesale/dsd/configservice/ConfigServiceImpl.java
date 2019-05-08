@@ -9,6 +9,9 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.morrisons.wholesale.dsd.config.ApplicationConfig;
 import com.morrisons.wholesale.dsd.dao.EventDAO;
+import com.morrisons.wholesale.dsd.dto.Customers;
+import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
+import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
 @Service("configService")
 public class ConfigServiceImpl implements ConfigService {
@@ -21,8 +24,11 @@ public class ConfigServiceImpl implements ConfigService {
 	@Autowired
 	private ApplicationConfig configuration;
 
+	@Autowired
+	private IBaseGetEndPoint<Customers> customerServiceConfig;
+
 	@Override
-	public OrderServiceConfigDescriptor getCustomersFromConfigService() {
+	public OrderServiceConfigDescriptor getCustomersConfigFromDynamo() {
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType START");
 
@@ -35,6 +41,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 			orderServiceConfigDescriptor = new ObjectMapper().readValue(item.toJSON(),
 					OrderServiceConfigDescriptor.class);
+
 		} catch (Exception e) {
 
 			LOGGER.error(String.format("No Configuration Found for combination %s ",
@@ -44,5 +51,15 @@ public class ConfigServiceImpl implements ConfigService {
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType END");
 		return orderServiceConfigDescriptor;
+	}
+
+	@Override
+	public Customers getCustomersConfigFromService() {
+
+		return customerServiceConfig.get(getParametersMappings());
+	}
+
+	private ParameterMappings getParametersMappings() {
+		return null;
 	}
 }
