@@ -3,6 +3,7 @@ package com.morrisons.wholesale.dsd.configservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
@@ -11,7 +12,7 @@ import com.morrisons.wholesale.dsd.config.ApplicationConfig;
 import com.morrisons.wholesale.dsd.dao.EventDAO;
 import com.morrisons.wholesale.dsd.dto.Customers;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
-import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
+import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
 @Service("configService")
 public class ConfigServiceImpl implements ConfigService {
@@ -25,7 +26,7 @@ public class ConfigServiceImpl implements ConfigService {
 	private ApplicationConfig configuration;
 
 	@Autowired
-	private IBaseGetEndPoint<Customers> customerServiceConfig;
+	private IBaseGetEndPoint<Customers> customerConfigServiceEndPoint;
 
 	@Override
 	public OrderServiceConfigDescriptor getCustomersConfigFromDynamo() {
@@ -46,7 +47,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 			LOGGER.error(String.format("No Configuration Found for combination %s ",
 					configuration.getCustomer().getIndexvalue()), e);
-			throw new RuntimeException();
+			throw new ConfigServiceException(102, "No Configuration Found", e, HttpStatus.NOT_FOUND.value());
 		}
 
 		LOGGER.info("ConfigServiceImpl getOrderServiceConfigByCustomerAndMessageType END");
@@ -56,10 +57,14 @@ public class ConfigServiceImpl implements ConfigService {
 	@Override
 	public Customers getCustomersConfigFromService() {
 
-		return customerServiceConfig.get(getParametersMappings());
-	}
+		try {
 
-	private ParameterMappings getParametersMappings() {
-		return null;
+			return customerConfigServiceEndPoint.get(null);
+		} catch (Exception e) {
+
+			LOGGER.error(String.format("No Configuration Found ",
+					configuration.getCustomer().getIndexvalue()), e);
+			throw new ConfigServiceException(102, "No Configuration Found", e, HttpStatus.NOT_FOUND.value());
+		}
 	}
 }

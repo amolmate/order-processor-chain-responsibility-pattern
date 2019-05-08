@@ -15,13 +15,13 @@ import com.morrisons.wholesale.dsd.endpoint.BaseEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.IBaseGetEndPoint;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 
-@Component("customerServiceConfig")
+@Component("customerConfigServiceEndPoint")
 public class ConfigServiceEndPoint extends BaseEndPoint<HttpHeaders, Customers> implements IBaseGetEndPoint<Customers> {
 
 	@Autowired
-	public ConfigServiceEndPoint(RestTemplate restTemplate, ExternalServiceConfig dSDOrdersConfig) {
+	public ConfigServiceEndPoint(RestTemplate restTemplate, ExternalServiceConfig customerServiceConfig) {
 
-		super(restTemplate, dSDOrdersConfig);
+		super(restTemplate, customerServiceConfig);
 	}
 
 	@Override

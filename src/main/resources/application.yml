@@ -51,7 +51,7 @@ pers:
     uri: https://api.morrisons.com/wholesale/v1/customers/{customerId}/stores/{storeId}/latest
     apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
     authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==
-  configurationServiceConfig:
+  customerServiceConfig:
     uri: https://wholesalecataloguemgmt.dev.np.morconnect.com/wholesale/v1/config/customers/@all
     apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
     authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==

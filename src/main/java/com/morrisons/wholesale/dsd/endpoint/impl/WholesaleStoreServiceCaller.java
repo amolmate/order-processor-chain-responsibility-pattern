@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
+import org.springframework.stereotype.Component;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.dto.Categories;
@@ -26,6 +27,7 @@ import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMapping;
 import com.morrisons.wholesale.dsd.endpoint.vo.ParameterMappings;
 import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
+@Component("wholesaleStoreServiceCaller")
 public class WholesaleStoreServiceCaller {
 
 	private IBaseGetEndPoint<ResponseEntity<Categories>> wholesaleStoreServiceEndPoint;
