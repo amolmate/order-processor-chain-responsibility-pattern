@@ -52,7 +52,7 @@ pers:
     apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
     authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==
   configurationServiceConfig:
-    uri: https://wholesalecataloguemgmt.dev.np.morconnect.com/wholesale/v1/config/customers/{customerId}/configType/wholesale-dsd-order-processor/revision/2a5ff842-6ab8-11e9-b46e-2ba3e2d0f6ec
+    uri: https://wholesalecataloguemgmt.dev.np.morconnect.com/wholesale/v1/config/customers/@all
     apiKey: LHn5X2zrjSlrdFKfhnzruE0gVLPkJCiz
     authorization: Basic TEhuNVgyenJqU2xyZEZLZmhuenJ1RTBnVkxQa0pDaXo6eXgyYXBBNjQzY1drcktBWQ==
   customer:

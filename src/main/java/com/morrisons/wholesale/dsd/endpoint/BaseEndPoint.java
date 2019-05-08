@@ -79,6 +79,11 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 
 		HttpHeaders headers = new HttpHeaders();
 
+		if (parameterMappings == null) {
+
+			return headers;
+		}
+
 		List<ParameterMapping> listMappings = parameterMappings.getHeaderParameters();
 
 		if (CollectionUtils.isNotEmpty(listMappings)) {
@@ -93,6 +98,13 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 
 		Map<String, String> uriParams = new HashMap<>();
 
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(externalServiceConfig.getUri());
+
+		if (parameterMappings == null) {
+
+			return builder.buildAndExpand(uriParams).toUri().toString();
+		}
+
 		List<ParameterMapping> pathParam = parameterMappings.getPathParameters();
 
 		for (ParameterMapping eachPathParam : pathParam) {
@@ -103,8 +115,6 @@ public abstract class BaseEndPoint<I, O> implements IBaseEndPoint<I, O> {
 		List<ParameterMapping> querryParam = parameterMappings.getQueryParameters();
 
 		// Query parameters
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(externalServiceConfig.getUri());
-
 		querryParam.forEach(q -> builder.queryParam(q.getName(), q.getValue()));
 
 		return builder.buildAndExpand(uriParams).toUri().toString();
