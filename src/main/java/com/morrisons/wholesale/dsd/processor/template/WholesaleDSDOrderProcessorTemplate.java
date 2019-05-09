@@ -1,0 +1,30 @@
+package com.morrisons.wholesale.dsd.processor.template;
+
+import com.morrisons.wholesale.dsd.processor.IWholesaleDSDOrderProcessor;
+
+public abstract class WholesaleDSDOrderProcessorTemplate<D, O> implements IWholesaleDSDOrderProcessor {
+
+	@Override
+	public void processTask() {
+		
+		// Retrieve customer list and supplier list from config service 
+		D data = getDataFromConifgService();
+		
+		// get dsd orders till date with status raised
+		O orders = getDSDOrdersWithStatusRaised(data);
+		
+		// validate all orders and items
+		validateDSDOrders(orders, data);
+		
+		// aggregate orders
+		aggregateOrders(data);
+	}
+
+	protected abstract D getDataFromConifgService();
+	
+	protected abstract O getDSDOrdersWithStatusRaised(D data);
+	
+	protected abstract void validateDSDOrders(O orders, D data);
+	
+	protected abstract void aggregateOrders(D data);
+}

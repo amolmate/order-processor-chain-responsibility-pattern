@@ -1,7 +1,5 @@
 package com.morrisons.wholesale.dsd.config;
 
-import javax.ws.rs.client.Client;
-
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -11,10 +9,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.morrisons.wholesale.dsd.provider.JerseyClientProvider;
-import com.morrisons.wholesale.dsd.provider.JerseyPatchClientProvider;
-import com.morrisons.wholesale.dsd.provider.PatchClient;
 
 import lombok.Data;
 
@@ -30,28 +24,20 @@ public class ApplicationConfig {
 
 	private String version;
 
-	private ProxyConfig proxyConfig;
-
 	private Customer customer;
-
-	private S3Configuration s3;
-
-	private DynamoDbConfiguration dynamoDbConfiguration;
-
-	private DatabaseConfig databaseConfig;
 
 	private ExternalServiceConfig dSDOrdersConfig;
 
 	private ExternalServiceConfig updateItemConfig;
-	
+
 	private ExternalServiceConfig pollingConfig;
-	
+
 	private ExternalServiceConfig storeServiceConfig;
-	
+
 	private ExternalServiceConfig customerServiceConfig;
-	
+
 	private RedisConfig redisConfig;
-	
+
 	@Bean("customerServiceConfig")
 	public ExternalServiceConfig getCustomerServiceConfig() {
 
@@ -69,40 +55,28 @@ public class ApplicationConfig {
 
 		return dSDOrdersConfig;
 	}
-	
+
 	@Bean("pollingConfig")
 	public ExternalServiceConfig getPollingConfig() {
 
 		return pollingConfig;
 	}
-	
+
 	@Bean("storeServiceConfig")
 	public ExternalServiceConfig getStoreServiceConfig() {
 
 		return storeServiceConfig;
 	}
-	
+
 	@Bean("redisConfig")
 	public RedisConfig getRedisConfig() {
 
 		return redisConfig;
 	}
-	
-	@Bean
-	public Client getJersyClient() {
 
-		return new JerseyClientProvider(getProxyConfig()).get();
-	}
-
-	@Bean
-	public PatchClient getJersyPathClient() {
-
-		return new JerseyPatchClientProvider(getProxyConfig()).get();
-	}
-	
 	@Bean("restTemplate")
 	public RestTemplate getRestTemplate(RestTemplateBuilder builder) {
-		
+
 		return builder.build();
 	}
 

@@ -4,7 +4,5 @@ import com.morrisons.wholesale.dsd.dto.Customers;
 
 public interface ConfigService {
 
-	OrderServiceConfigDescriptor getCustomersConfigFromDynamo();
-	
 	Customers getCustomersConfigFromService();
 }
