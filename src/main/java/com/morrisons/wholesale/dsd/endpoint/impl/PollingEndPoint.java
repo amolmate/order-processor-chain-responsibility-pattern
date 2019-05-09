@@ -5,6 +5,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,11 +39,19 @@ public class PollingEndPoint extends BaseEndPoint<HttpHeaders, PollingResponse>
 
 	@Override
 	public PollingResponse get(ParameterMappings parameterMappings) {
+		
 		return getOutputEntity(send(parameterMappings, null));
 	}
 
 	@Override
 	protected HttpMethod getHttpMethod() {
-		return null;
+		
+		return HttpMethod.GET;
+	}
+	
+	@Override
+	protected PollingResponse getOutputEntity(ResponseEntity<PollingResponse> response) {
+
+		return response.getBody();
 	}
 }
