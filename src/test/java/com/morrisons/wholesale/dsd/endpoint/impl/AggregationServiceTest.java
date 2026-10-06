@@ -1,21 +1,20 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.core.Response;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.morrisons.wholesale.dsd.config.ExternalServiceConfig;
 import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 
-@RunWith(MockitoJUnitRunner.class)
+/**
+ * AggregationServiceTest - JUnit 5 rewrite
+ * Most test cases are placeholders/commented out.
+ */
+@ExtendWith(MockitoExtension.class)
 public class AggregationServiceTest {
-
-	// @InjectMocks
-	// private CancelStockMovementEndPoint cancelStockMovementEndPoint;
 
 	@Mock
 	private ConfigServiceException exception;
@@ -23,30 +22,23 @@ public class AggregationServiceTest {
 	@Mock
 	private ExternalServiceConfig externalServiceConfig;
 
-	private Response response;
-
-	@Before
+	@BeforeEach
 	public void setUp() {
+		// Test setup
 	}
 
 	@Test
 	public void testGetExceptionForErrorResponses() {
-
-		// Assert.assertEquals("WMMException is not matching", exception,
-		// cancelStockMovementEndPoint.getExceptionForErrorResponse("X",0));
+		// Placeholder test - original implementation was commented out
 	}
 
 	@Test
 	public void testGetOutputEntityClass() {
-
-		// Assert.assertTrue("Class is null",
-		// cancelStockMovementEndPoint.getOutputEntityClass() instanceof Class);
+		// Placeholder test - original implementation was commented out
 	}
 
 	@Test
 	public void testGetOutputEntity() {
-
-		// Assert.assertEquals(null,
-		// cancelStockMovementEndPoint.getOutputEntity(response));
+		// Placeholder test - original implementation was commented out
 	}
 }

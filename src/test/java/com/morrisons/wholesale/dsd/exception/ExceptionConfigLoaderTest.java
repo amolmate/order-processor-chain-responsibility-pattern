@@ -1,27 +1,27 @@
 package com.morrisons.wholesale.dsd.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * ExceptionConfigLoaderTest - JUnit 5 rewrite
+ * Tests exception configuration loading and error message retrieval.
  * 
  * @author surajv
- *
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ExceptionConfigLoaderTest {
 
 	@InjectMocks
 	private ExceptionConfigLoader exceptionConfigLoader;
 	
 	@Mock
-	ExceptionConfigListWrapper exceptionConfigListWrapper;
+	private ExceptionConfigListWrapper exceptionConfigListWrapper;
 
 	@Test
 	public void testInitializeExceptionMap() {
@@ -30,6 +30,6 @@ public class ExceptionConfigLoaderTest {
 
 	@Test
 	public void testGetErrorMessage() {
-		Assert.assertNotNull("ExceptionConfigDetails is null", exceptionConfigLoader.getErrorMessage(401));
+		assertNotNull(exceptionConfigLoader.getErrorMessage(401), "ExceptionConfigDetails should not be null");
 	}
 }

@@ -3,10 +3,10 @@ package com.morrisons.wholesale.dsd.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.filters.FilterPackageInfo;
@@ -18,11 +18,12 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 
 /**
+ * POJOCoverageTest - JUnit 5 rewrite
+ * Tests POJO structure and behavior using OpenPojo validation framework.
  * 
  * @author surajv
- *
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class POJOCoverageTest {
 
 	private static final String[] POJO_PKGS = { "com.morrisons.stock.config", "com.morrisons.stock.endpoint.vo",
@@ -32,7 +33,7 @@ public class POJOCoverageTest {
 	private List<PojoClass> pojoClasses;
 	private ValidatorBuilder validatorBuilder;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 
 		pojoClasses = getPojoClasses();

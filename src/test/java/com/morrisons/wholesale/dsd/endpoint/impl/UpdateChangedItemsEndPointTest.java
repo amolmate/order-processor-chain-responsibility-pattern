@@ -1,9 +1,14 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+/**
+ * UpdateChangedItemsEndPointTest - JUnit 5 rewrite
+ * Tests for the UpdateChangedItemsEndPoint.
+ * Most test cases are placeholders/commented out.
+ */
+@ExtendWith(MockitoExtension.class)
 public class UpdateChangedItemsEndPointTest {
 
 	/*
@@ -13,7 +18,7 @@ public class UpdateChangedItemsEndPointTest {
 	 * 
 	 * @Mock private WMMException exception;
 	 * 
-	 * @Before public void setUp() {
+	 * @BeforeEach public void setUp() {
 	 * 
 	 * Mockito.when(exceptionFactory.createException(Matchers.anyInt(),
 	 * Matchers.anyString(),Matchers.anyInt())).thenReturn(exception); }
