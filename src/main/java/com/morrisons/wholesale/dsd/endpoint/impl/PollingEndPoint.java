@@ -1,10 +1,9 @@
 package com.morrisons.wholesale.dsd.endpoint.impl;
 
-import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -34,7 +33,7 @@ public class PollingEndPoint extends BaseEndPoint<HttpHeaders, PollingResponse>
 	@Override
 	protected boolean isStatusValid(int status) {
 
-		return status == Response.Status.ACCEPTED.getStatusCode();
+		return status == HttpStatus.ACCEPTED.value();
 	}
 
 	@Override
