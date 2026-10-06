@@ -11,11 +11,6 @@ import com.morrisons.wholesale.dsd.exception.ConfigServiceException;
 import com.morrisons.wholesale.dsd.exception.ExceptionConfigLoader;
 import com.morrisons.wholesale.dsd.processor.IWholesaleDSDOrderProcessor;
 
-/**
- * ApplicationTest - JUnit 5 rewrite
- * Tests for the main application entry point.
- * Most test cases are placeholders/commented out from original JUnit 4 version.
- */
 @ExtendWith(MockitoExtension.class)
 public class ApplicationTest {
 
@@ -32,54 +27,31 @@ public class ApplicationTest {
 
 	@BeforeEach
 	public void setUp() {
-		// Setup test fixtures
-		/*
-		 * applicationConfig = new ApplicationConfig();
-		 * 
-		 * snsConfig = new SNSConfig(); snsConfig.setEnableSNSPublishing(true);
-		 * 
-		 * applicationConfig.setSnsConfig(snsConfig);
-		 */
+		// Placeholder setup
 	}
 
 	@Test
 	public void testMain() {
-		// Placeholder test - original implementation was commented out
+		// Placeholder test
 	}
 
 	@Test
 	public void testMainWithWMMException() {
-		// Placeholder test - original implementation was commented out
-		/*
-		 * Mockito.when(ApplicationConfigLoader.getApplicationConfig()).
-		 * thenThrow(wMMException); Application.main(null);
-		 */
+		// Placeholder test
 	}
 
 	@Test
 	public void testMainWithException() {
-		// Placeholder test - original implementation was commented out
-		/*
-		 * Mockito.when(ApplicationConfigLoader.getApplicationConfig()).
-		 * thenThrow(new RuntimeException()); Application.main(null);
-		 */
+		// Placeholder test
 	}
 
 	@Test
 	public void testIsEnableSNSPublishingReturnsFalse() {
-		// Placeholder test - original implementation was commented out
-		/*
-		 * applicationConfig.getSnsConfig().setEnableSNSPublishing(false);
-		 * Application.main(null);
-		 */
+		// Placeholder test
 	}
 
 	@Test
 	public void testMainForSessionFactoryBranchCoverage() {
-		// Placeholder test - original implementation was commented out
-		/*
-		 * Mockito.when(HibernateSessionFactory.getSessionfactory(
-		 * applicationConfig)).thenReturn(null); Application.main(null);
-		 */
+		// Placeholder test
 	}
 }
